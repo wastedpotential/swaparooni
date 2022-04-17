@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script src="assets.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <script>
+
+        // Listen for window resize events
+        window.addEventListener('resize', onResize);
+
+        // Resize function window
+        function onResize() {	
+            app.renderer.resize(window.innerWidth, window.innerHeight); // Resize the renderer
+            // console.log('~~', sprite);
+            if (sprite) {
+                sprite.position.x = 20;
+                sprite.position.y = 20;
+            }
+        }
+
+        function populateLetterArrays(str, objectsRemaining) {
+            // console.log('pop:', str, objectsRemaining);
+            const line = [];
+            for (var i = 0; i < str.length; i++) {
+                const nextLetter = str.charAt(i);
+                // TODO: if space, handle it here
+                line.push(objectsRemaining.find(e => e.char == nextLetter));
+                // TODO: mark object as used
+            }
+            console.log('herp:', line);
+            return line;
+        }
+  
+      let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio });
+      document.body.appendChild(app.view);
+
+      const phrase = 'wasted\npotential';
+      const splitPhrase = phrase.split('\n');
+      const lineArray = [];
+      for (const str of splitPhrase) {
+          console.log('line:', str);
+        lineArray.push(populateLetterArrays(str, letters));
+      }
+
+      console.log('~~', lineArray);
+      
+      let sprite = PIXI.Sprite.from('assets/w1.png'); // Magically load the PNG asynchronously
+      app.stage.addChild(sprite);
+
+      onResize();
+    </script>
+  </body>
+</html>
