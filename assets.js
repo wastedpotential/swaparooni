@@ -1,6 +1,7 @@
 const letters = [
     {
         char: 'w',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -9,6 +10,7 @@ const letters = [
     },
     {
         char: 'a',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -17,6 +19,7 @@ const letters = [
     },
     {
         char: 's',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -25,6 +28,7 @@ const letters = [
     },
     {
         char: 't',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -33,6 +37,7 @@ const letters = [
     },
     {
         char: 'e',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -41,6 +46,7 @@ const letters = [
     },
     {
         char: 'd',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -49,6 +55,7 @@ const letters = [
     },
     {
         char: 'p',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -57,6 +64,7 @@ const letters = [
     },
     {
         char: 'o',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -65,6 +73,7 @@ const letters = [
     },
     {
         char: 't',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -73,6 +82,7 @@ const letters = [
     },
     {
         char: 'e',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -81,6 +91,7 @@ const letters = [
     },
     {
         char: 'n',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -89,6 +100,7 @@ const letters = [
     },
     {
         char: 't',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -97,6 +109,7 @@ const letters = [
     },
     {
         char: 'i',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -105,6 +118,7 @@ const letters = [
     },
     {
         char: 'a',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,
@@ -113,6 +127,7 @@ const letters = [
     },
     {
         char: 'l',
+        used: false,
         destX: 0,
         destY: 0,
         h: 50,

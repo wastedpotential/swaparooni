@@ -12,48 +12,94 @@
   </head>
   <body>
     <script>
+        // import { Container } from '@pixi/display';
+        // import { Sprite } from '@pixi/sprite';
 
-        // Listen for window resize events
-        window.addEventListener('resize', onResize);
+        const WIDTH = 50;
+        const HEIGHT = 50;
 
-        // Resize function window
-        function onResize() {	
-            app.renderer.resize(window.innerWidth, window.innerHeight); // Resize the renderer
-            // console.log('~~', sprite);
-            if (sprite) {
-                sprite.position.x = 20;
-                sprite.position.y = 20;
-            }
+        function duplicateArray(arrayOfObjects) { 
+            const dupe = arrayOfObjects.map((obj) => {
+                const newObj = {...obj}  
+                return newObj;
+            });
+            return dupe;
         }
 
-        function populateLetterArrays(str, objectsRemaining) {
+        function populateLetterArrays(str, objectArray) {
             // console.log('pop:', str, objectsRemaining);
             const line = [];
             for (var i = 0; i < str.length; i++) {
                 const nextLetter = str.charAt(i);
                 // TODO: if space, handle it here
-                line.push(objectsRemaining.find(e => e.char == nextLetter));
-                // TODO: mark object as used
+                const letterObj = objectArray.find(e => {
+                    return !(e.used) && (e.char == nextLetter);
+                });
+                line.push(letterObj);
+                letterObj.used = true;
             }
             console.log('herp:', line);
             return line;
         }
-  
-      let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio });
-      document.body.appendChild(app.view);
-
-      const phrase = 'wasted\npotential';
+      
+      // prep objects for parsing:
+      const jerp = duplicateArray(letters);
+      
+      const phrase = 'sealed\nwntt\npatio';
+      // TODO: add a check that the anagram is valid
       const splitPhrase = phrase.split('\n');
       const lineArray = [];
       for (const str of splitPhrase) {
-          console.log('line:', str);
-        lineArray.push(populateLetterArrays(str, letters));
+        //   console.log('line:', str);
+        lineArray.push(populateLetterArrays(str, jerp));
       }
 
-      console.log('~~', lineArray);
+      const startY = -0.5 * lineArray.length * HEIGHT;
+      for (let i=0; i<lineArray.length; i++){
+        const line = lineArray[i];
+        const lineStartX = -0.5 * line.length * WIDTH;
+        const lineStartY = i * HEIGHT + startY;
+        for (let j=0; j<line.length; j++) {
+            const ltr = line[j];
+            ltr.destX = lineStartX + j * WIDTH;
+            ltr.destY = lineStartY;
+        }
+      }
+    
+
       
-      let sprite = PIXI.Sprite.from('assets/w1.png'); // Magically load the PNG asynchronously
-      app.stage.addChild(sprite);
+// ==================== VIEW STUFF =========================
+
+      // Listen for window resize events
+      window.addEventListener('resize', onResize);
+
+    // Resize function window
+    function onResize() {	
+        app.renderer.resize(window.innerWidth, window.innerHeight); // Resize the renderer
+        // console.log('~~', sprite);
+        // if (sprite) {
+        //     sprite.position.x = 20;
+        //     sprite.position.y = 20;
+        // }
+    }
+
+      let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio });
+      document.body.appendChild(app.view);
+
+      const centerPoint = new PIXI.Container();
+      centerPoint.x = centerPoint.y = 200;
+      for (let i=0; i<lineArray.length; i++) {
+        const line = lineArray[i];
+        for (let j=0; j<line.length; j++) {
+            const ltr = line[j];
+            let sprite = PIXI.Sprite.from(ltr.img); // Magically load the PNG asynchronously
+            sprite.position.x = ltr.destX;
+            sprite.position.y = ltr.destY;
+            centerPoint.addChild(sprite);
+        }
+      }
+
+      app.stage.addChild(centerPoint);
 
       onResize();
     </script>
