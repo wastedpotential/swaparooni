@@ -7,6 +7,8 @@
         html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
   </head>
@@ -14,9 +16,6 @@
     <script>
         // import { Container } from '@pixi/display';
         // import { Sprite } from '@pixi/sprite';
-
-        const WIDTH = 50;
-        const HEIGHT = 50;
 
         function duplicateArray(arrayOfObjects) { 
             const dupe = arrayOfObjects.map((obj) => {
@@ -41,11 +40,22 @@
             console.log('herp:', line);
             return line;
         }
+
+        function totalWidth(items) {
+            var total = items.reduce(
+                (partialSum, a) => partialSum + a.w, 0
+            );
+            return total;
+        }
+
+        // calculateLetterPositions() {
+
+        // }
       
       // prep objects for parsing:
       const jerp = duplicateArray(letters);
       
-      const phrase = 'sealed\nwntt\npatio';
+      const phrase = 'salted\nnewt\npatio';
       // TODO: add a check that the anagram is valid
       const splitPhrase = phrase.split('\n');
       const lineArray = [];
@@ -54,15 +64,18 @@
         lineArray.push(populateLetterArrays(str, jerp));
       }
 
-      const startY = -0.5 * lineArray.length * HEIGHT;
+      
+      const startY = -0.5 * lineArray.length * letterHeight;
       for (let i=0; i<lineArray.length; i++){
         const line = lineArray[i];
-        const lineStartX = -0.5 * line.length * WIDTH;
-        const lineStartY = i * HEIGHT + startY;
+        const totalW = totalWidth(line);
+        let lineX = -0.5 * totalW;
+        const lineStartY = i * letterHeight + startY;
         for (let j=0; j<line.length; j++) {
             const ltr = line[j];
-            ltr.destX = lineStartX + j * WIDTH;
+            ltr.destX = lineX + line[j].w;
             ltr.destY = lineStartY;
+            lineX += line[j].w;
         }
       }
     
@@ -75,19 +88,23 @@
 
     // Resize function window
     function onResize() {	
-        app.renderer.resize(window.innerWidth, window.innerHeight); // Resize the renderer
-        // console.log('~~', sprite);
-        // if (sprite) {
-        //     sprite.position.x = 20;
-        //     sprite.position.y = 20;
-        // }
+        const parent = app.view.parentNode;
+   
+        // Resize the renderer
+        app.renderer.resize(parent.clientWidth, parent.clientHeight);
+  
+        // You can use the 'screen' property as the renderer visible
+        // area, this is more useful than view.width/height because
+        // it handles resolution
+        if (centerPoint) {
+            centerPoint.position.set(0.5 * app.screen.width, 0.5 * app.screen.height);
+        }
     }
 
       let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio });
       document.body.appendChild(app.view);
 
       const centerPoint = new PIXI.Container();
-      centerPoint.x = centerPoint.y = 200;
       for (let i=0; i<lineArray.length; i++) {
         const line = lineArray[i];
         for (let j=0; j<line.length; j++) {
