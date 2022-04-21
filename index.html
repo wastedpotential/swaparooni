@@ -7,12 +7,15 @@
         html, body {
             margin: 0;
             padding: 0;
-            width: 100%;
             height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #ff0000;
         }
     </style>
   </head>
   <body>
+      <div class="container"></div>
     <script>
         // import { Container } from '@pixi/display';
         // import { Sprite } from '@pixi/sprite';
@@ -53,6 +56,7 @@
         // }
       
       // prep objects for parsing:
+      // TODO: this isn't used:
       const jerp = duplicateArray(letters);
       
       const phrase = 'salted\nnewt\npatio';
@@ -69,11 +73,12 @@
       for (let i=0; i<lineArray.length; i++){
         const line = lineArray[i];
         const totalW = totalWidth(line);
+        console.log(i, line.length, totalW);
         let lineX = -0.5 * totalW;
         const lineStartY = i * letterHeight + startY;
         for (let j=0; j<line.length; j++) {
             const ltr = line[j];
-            ltr.destX = lineX + line[j].w;
+            ltr.destX = lineX;
             ltr.destY = lineStartY;
             lineX += line[j].w;
         }
@@ -84,26 +89,27 @@
 // ==================== VIEW STUFF =========================
 
       // Listen for window resize events
-      window.addEventListener('resize', onResize);
+       window.addEventListener('resize', onResize);
 
     // Resize function window
     function onResize() {	
-        const parent = app.view.parentNode;
-   
+        // const parent = app.view.parentNode;
+        // console.log(parent, parent.height, devicePixelRatio);
         // Resize the renderer
-        app.renderer.resize(parent.clientWidth, parent.clientHeight);
+        const w = window.innerWidth/devicePixelRatio;
+        const h = window.innerHeight/devicePixelRatio;
+        app.renderer.resize(w, h);
   
-        // You can use the 'screen' property as the renderer visible
-        // area, this is more useful than view.width/height because
-        // it handles resolution
         if (centerPoint) {
-            centerPoint.position.set(0.5 * app.screen.width, 0.5 * app.screen.height);
+            centerPoint.position.set(0.5 * w, 0.5 * h);
         }
     }
 
-      let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio });
-      document.body.appendChild(app.view);
-
+      let app = new PIXI.Application({ resolution: devicePixelRatio });
+      const cont = document.querySelector('.container'); 
+      cont.appendChild(app.view);
+      console.log(cont);
+      console.log('~', window.innerWidth, window.innerHeight, devicePixelRatio);
       const centerPoint = new PIXI.Container();
       for (let i=0; i<lineArray.length; i++) {
         const line = lineArray[i];
