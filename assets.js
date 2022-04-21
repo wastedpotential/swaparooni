@@ -4,6 +4,7 @@ const anagrams = [
     'wipe\ndental\nstoat',
     'wean\nspittle\ntoad',
     'slow\ntainted\npeat',
+    'weed at\nlost paint',
 ]
 
 const letterHeight = 50; // all letters must be same height
@@ -128,5 +129,33 @@ const letters = [
         destY: 0,
         w: 50,
         img: 'assets/l1.png',
+    },
+    {
+        char: ' ',
+        used: false,
+        destX: 0,
+        destY: 0,
+        w: 35,
+    },
+    {
+        char: ' ',
+        used: false,
+        destX: 0,
+        destY: 0,
+        w: 35,
+    },
+    {
+        char: ' ',
+        used: false,
+        destX: 0,
+        destY: 0,
+        w: 35,
+    },
+    {
+        char: ' ',
+        used: false,
+        destX: 0,
+        destY: 0,
+        w: 35,
     },
 ];

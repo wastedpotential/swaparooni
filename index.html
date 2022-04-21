@@ -35,6 +35,7 @@
                 const letterObj = objectArray.find(e => {
                     return !(e.used) && (e.char == nextLetter);
                 });
+                console.log('letterObj:', letterObj);
                 line.push(letterObj);
                 letterObj.used = true;
             }
@@ -113,10 +114,12 @@
         const line = lineArray[i];
         for (let j=0; j<line.length; j++) {
             const ltr = line[j];
-            let sprite = PIXI.Sprite.from(ltr.img); // Magically load the PNG asynchronously
-            sprite.position.x = ltr.destX;
-            sprite.position.y = ltr.destY;
-            centerPoint.addChild(sprite);
+            if (ltr.img) { // don't render spaces. duh.
+                let sprite = PIXI.Sprite.from(ltr.img); // Magically load the PNG asynchronously
+                sprite.position.x = ltr.destX;
+                sprite.position.y = ltr.destY;
+                centerPoint.addChild(sprite);
+            }
         }
       }
 
