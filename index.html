@@ -5,19 +5,35 @@
     <script src="assets.js"></script>
     <style>
         html, body {
-            margin: 0;
-            padding: 0;
+            position: relativ;
             height: 100%;
             width: 100%;
+            margin: 0;
+            padding: 0;
             overflow: hidden; /* prevent scrollbars */
-            background-color: #ff0000;
+        }
+        .container {
+            position: absolute;
+        }
+        .menu {
+            position: absolute;
         }
     </style>
   </head>
   <body>
       <div class="container"></div>
+      <div class="menu"><button type="button" onclick="swapText()">Herp Derp</button></div>
     <script>
         
+        function swapText() {
+            console.log("swap");
+            const lines = getPhraseLines(anagrams);
+            const dupe = duplicateArray(letters);
+            const lineArray = getLetterObjArray(lines, dupe);
+            const destPositions = calculateLetterObjPositions(lineArray, letterHeight);
+            changePositions(destPositions);
+        }
+
         function duplicateArray(arrayOfObjects) { 
             const dupe = arrayOfObjects.map((obj) => {
                 const newObj = {...obj}  
@@ -54,63 +70,49 @@
 
         // }
       
-      // prep objects for parsing:
-      // TODO: this isn't used:
-      const dupe = duplicateArray(letters);
+      function getPhraseLines(phrases) {
+        const ind = Math.floor(phrases.length* Math.random());
+        const phrase = phrases[ind];
+        // TODO: add a check that the anagram is valid
+        // TODO: add a check that anagram is not the same as the one already showing
+        return phrase.split('\n');
+      }
       
-      const ind = Math.floor(anagrams.length* Math.random());
-      const phrase = anagrams[ind];
-      // TODO: add a check that the anagram is valid
-      const splitPhrase = phrase.split('\n');
-      const lineArray = [];
-      for (const str of splitPhrase) {
-        //   console.log('line:', str);
-        lineArray.push(populateLetterArrays(str, dupe));
+      function getLetterObjArray(stringArray, letterObjectsArray) {
+        const lineArray = [];
+        for (const str of stringArray) {
+            //   console.log('line:', str);
+            lineArray.push(populateLetterArrays(str, letterObjectsArray));
+        }
+        return lineArray;
+      }
+      
+      function calculateLetterObjPositions(lineArray, letterHeight) {
+        const startY = -0.5 * lineArray.length * letterHeight;
+        for (let i=0; i<lineArray.length; i++){
+            const line = lineArray[i];
+            const totalW = totalWidth(line);
+            console.log(i, line.length, totalW);
+            let lineX = -0.5 * totalW;
+            const lineStartY = i * letterHeight + startY;
+            for (let j=0; j<line.length; j++) {
+                const ltr = line[j];
+                ltr.destX = lineX;
+                ltr.destY = lineStartY;
+                lineX += line[j].w;
+            }
+        }
+        return lineArray;
       }
 
-      const startY = -0.5 * lineArray.length * letterHeight;
-      for (let i=0; i<lineArray.length; i++){
-        const line = lineArray[i];
-        const totalW = totalWidth(line);
-        console.log(i, line.length, totalW);
-        let lineX = -0.5 * totalW;
-        const lineStartY = i * letterHeight + startY;
-        for (let j=0; j<line.length; j++) {
-            const ltr = line[j];
-            ltr.destX = lineX;
-            ltr.destY = lineStartY;
-            lineX += line[j].w;
-        }
-      }
+      
       
 
       
 // ==================== VIEW STUFF =========================
 
-      // Listen for window resize events
-       window.addEventListener('resize', onResize);
-
-    // Resize function window
-    function onResize() {	
-        // const parent = app.view.parentNode;
-        // console.log(parent, parent.height, devicePixelRatio);
-        // Resize the renderer
-        const w = window.innerWidth/devicePixelRatio;
-        const h = window.innerHeight/devicePixelRatio;
-        app.renderer.resize(w, h);
-  
-        if (centerPoint) {
-            centerPoint.position.set(0.5 * w, 0.5 * h);
-        }
-    }
-
-      let app = new PIXI.Application({ resolution: devicePixelRatio });
-      const cont = document.querySelector('.container'); 
-      cont.appendChild(app.view);
-      console.log(cont);
-      console.log('~', window.innerWidth, window.innerHeight, devicePixelRatio);
-      const centerPoint = new PIXI.Container();
-      for (let i=0; i<lineArray.length; i++) {
+    function changePositions(lineArray) {
+        for (let i=0; i<lineArray.length; i++) {
         const line = lineArray[i];
         for (let j=0; j<line.length; j++) {
             const ltr = line[j];
@@ -122,8 +124,25 @@
             }
         }
       }
+    }
+     
+    function onResize() {	
+        const w = window.innerWidth/devicePixelRatio;
+        const h = window.innerHeight/devicePixelRatio;
+        app.renderer.resize(w, h);
+  
+        if (centerPoint) {
+            centerPoint.position.set(0.5 * w, 0.5 * h);
+        }
+    }
 
-      app.stage.addChild(centerPoint);
+    window.addEventListener('resize', onResize);
+
+    let app = new PIXI.Application({ resolution: devicePixelRatio });
+    const cont = document.querySelector('.container'); 
+    cont.appendChild(app.view);
+    const centerPoint = new PIXI.Container();
+    app.stage.addChild(centerPoint);
 
       onResize();
     </script>

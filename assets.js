@@ -5,6 +5,7 @@ const anagrams = [
     'wean\nspittle\ntoad',
     'slow\ntainted\npeat',
     'weed at\nlost paint',
+    'tepid snot\ntea law',
 ]
 
 const letterHeight = 50; // all letters must be same height
