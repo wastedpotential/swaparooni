@@ -27,10 +27,12 @@
         
         function swapText() {
             console.log("swap");
-            const lines = getPhraseLines(anagrams);
+            const phrase = getRandomPhrase(anagrams);
+            const lines = phrase.split('\n');
             const dupe = duplicateArray(letters);
             const lineArray = getLetterObjArray(lines, dupe);
             const destPositions = calculateLetterObjPositions(lineArray, letterHeight);
+            changePageTitle(phrase);
             changePositions(destPositions);
         }
 
@@ -66,16 +68,13 @@
             return total;
         }
 
-        // calculateLetterPositions() {
-
-        // }
       
-      function getPhraseLines(phrases) {
+      function getRandomPhrase(phrases) {
         const ind = Math.floor(phrases.length* Math.random());
         const phrase = phrases[ind];
         // TODO: add a check that the anagram is valid
         // TODO: add a check that anagram is not the same as the one already showing
-        return phrase.split('\n');
+        return phrase;
       }
       
       function getLetterObjArray(stringArray, letterObjectsArray) {
@@ -106,12 +105,16 @@
       }
 
       
-      
+      function changePageTitle(phrase) {
+          const newTitle = phrase.split('\n').join(' ');
+          document.title = newTitle;
+      }
 
       
 // ==================== VIEW STUFF =========================
 
     function changePositions(lineArray) {
+        removeAllLettersFrom(centerPoint);
         for (let i=0; i<lineArray.length; i++) {
         const line = lineArray[i];
         for (let j=0; j<line.length; j++) {
@@ -124,6 +127,12 @@
             }
         }
       }
+    }
+
+    function removeAllLettersFrom(displayObject) {
+        for (var i = displayObject.children.length - 1; i >= 0; i--) {	
+            displayObject.removeChild(displayObject.children[i]);
+        };
     }
      
     function onResize() {	

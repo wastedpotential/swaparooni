@@ -1,5 +1,6 @@
 const siteTitle = 'wasted\npotential';
 const anagrams = [
+    'wasted\npotential',
     'salted\nnewt\npatio',
     'wipe\ndental\nstoat',
     'wean\nspittle\ntoad',
