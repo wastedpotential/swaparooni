@@ -3,6 +3,7 @@
   <head>
     <script src="https://pixijs.download/release/pixi.js"></script>
     <script src="assets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <style>
         html, body {
             position: relativ;
@@ -22,14 +23,24 @@
   </head>
   <body>
       <div class="container"></div>
-      <div class="menu"><button type="button" onclick="swapText()">Herp Derp</button></div>
+      <div class="menu">
+          <button type="button" onclick="swapText()">Herp Derp</button>
+          <button type="button" onclick="tweenIt()">Tweiner</button>
+        </div>
     <script>
-        
+        function tweenIt() {
+            for (let i=0; i<sprites.length; i++) {
+                const endPosX = Math.floor(window.innerWidth/devicePixelRatio * Math.random());
+                const endPosY = Math.floor(window.innerHeight/devicePixelRatio * Math.random());
+                gsap.to(sprites[i], { x: endPosX, y: endPosY, duration: 0.5 });
+            }
+        }
+        const dupe = duplicateArray(letters);
+            
         function swapText() {
             console.log("swap");
             const phrase = getRandomPhrase(anagrams);
             const lines = phrase.split('\n');
-            const dupe = duplicateArray(letters);
             const lineArray = getLetterObjArray(lines, dupe);
             const destPositions = calculateLetterObjPositions(lineArray, letterHeight);
             changePageTitle(phrase);
@@ -113,8 +124,10 @@
       
 // ==================== VIEW STUFF =========================
 
+      let sprites = [];
     function changePositions(lineArray) {
         removeAllLettersFrom(centerPoint);
+        sprites = [];
         for (let i=0; i<lineArray.length; i++) {
         const line = lineArray[i];
         for (let j=0; j<line.length; j++) {
@@ -124,6 +137,7 @@
                 sprite.position.x = ltr.destX;
                 sprite.position.y = ltr.destY;
                 centerPoint.addChild(sprite);
+                sprites.push(sprite);
             }
         }
       }
