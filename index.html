@@ -29,38 +29,44 @@
         </div>
     <script>
         function tweenIt() {
-            for (let i=0; i<sprites.length; i++) {
-                const endPosX = Math.floor(window.innerWidth/devicePixelRatio * Math.random());
-                const endPosY = Math.floor(window.innerHeight/devicePixelRatio * Math.random());
-                gsap.to(sprites[i], { x: endPosX, y: endPosY, duration: 0.5 });
+            for (let i=0; i<letters.length; i++) {
+                if (letters[i].used) letters[i].used = false;
             }
+            let ana = getAnagram(anagrams, currentPhrase);
+            showNewAnagram(ana);
+            // for (let i=0; i<sprites.length; i++) {
+            //     const endPosX = Math.floor(window.innerWidth/devicePixelRatio * Math.random());
+            //     const endPosY = Math.floor(window.innerHeight/devicePixelRatio * Math.random());
+            //     gsap.to(sprites[i], { x: endPosX, y: endPosY, duration: 0.5 });
+            // }
         }
-        const dupe = duplicateArray(letters);
+        // const dupe = duplicateArray(letters);
             
-        function swapText() {
-            console.log("swap");
-            const phrase = getRandomPhrase(anagrams);
-            const lines = phrase.split('\n');
-            const lineArray = getLetterObjArray(lines, dupe);
-            const destPositions = calculateLetterObjPositions(lineArray, letterHeight);
-            changePageTitle(phrase);
-            changePositions(destPositions);
-        }
+        // function swapText() {
+        //     console.log("swap");
+        //     const phrase = getRandomPhrase(anagrams);
+        //     const lines = phrase.split('\n');
+        //     const lineArray = getLetterObjArray(lines, dupe);
+        //     const destPositions = calculateLetterObjPositions(lineArray, letterHeight);
+        //     changePageTitle(phrase);
+        //     swapLetters(destPositions);
+        // }
 
-        function duplicateArray(arrayOfObjects) { 
-            const dupe = arrayOfObjects.map((obj) => {
-                const newObj = {...obj}  
-                return newObj;
-            });
-            return dupe;
-        }
+        // function duplicateArray(arrayOfObjects) { 
+        //     const dupe = arrayOfObjects.map((obj) => {
+        //         const newObj = {...obj}  
+        //         return newObj;
+        //     });
+        //     return dupe;
+        // }
 
         function populateLetterArrays(str, objectArray) {
-            // console.log('pop:', str, objectsRemaining);
+            console.log('pop:', str, objectArray);
             const line = [];
             for (var i = 0; i < str.length; i++) {
                 const nextLetter = str.charAt(i);
                 // TODO: if space, handle it here
+                console.log("nextLEtter:", nextLetter);
                 const letterObj = objectArray.find(e => {
                     return !(e.used) && (e.char == nextLetter);
                 });
@@ -80,13 +86,13 @@
         }
 
       
-      function getRandomPhrase(phrases) {
-        const ind = Math.floor(phrases.length* Math.random());
-        const phrase = phrases[ind];
-        // TODO: add a check that the anagram is valid
-        // TODO: add a check that anagram is not the same as the one already showing
-        return phrase;
-      }
+    //   function getRandomPhrase(phrases) {
+    //     const ind = Math.floor(phrases.length* Math.random());
+    //     const phrase = phrases[ind];
+    //     // TODO: add a check that the anagram is valid
+    //     // TODO: add a check that anagram is not the same as the one already showing
+    //     return phrase;
+    //   }
       
       function getLetterObjArray(stringArray, letterObjectsArray) {
         const lineArray = [];
@@ -125,49 +131,131 @@
 // ==================== VIEW STUFF =========================
 
       let sprites = [];
-    function changePositions(lineArray) {
-        removeAllLettersFrom(centerPoint);
-        sprites = [];
-        for (let i=0; i<lineArray.length; i++) {
-        const line = lineArray[i];
-        for (let j=0; j<line.length; j++) {
-            const ltr = line[j];
-            if (ltr.img) { // don't render spaces. duh.
-                let sprite = PIXI.Sprite.from(ltr.img); // Magically load the PNG asynchronously
-                sprite.position.x = ltr.destX;
-                sprite.position.y = ltr.destY;
-                centerPoint.addChild(sprite);
-                sprites.push(sprite);
+    function swapLetters(lineArray, animated=true) {
+        // removeAllLettersFrom(centerPoint);
+        // sprites = [];
+        // for (let i=0; i<lineArray.length; i++) {
+        // const line = lineArray[i];
+        for (let i=0; i<letters.length; i++) {
+            const ltr = letters[i];
+            if (ltr.sprite) { // don't render spaces. duh.
+                if (animated) {
+                    // const endPosX = Math.floor(window.innerWidth/devicePixelRatio * Math.random());
+                    // const endPosY = Math.floor(window.innerHeight/devicePixelRatio * Math.random());
+                    gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3 });
+                } else {
+                    ltr.sprite.position.x = ltr.destX;
+                    ltr.sprite.position.y = ltr.destY;
+                }                
             }
         }
-      }
+    //   }
     }
 
-    function removeAllLettersFrom(displayObject) {
-        for (var i = displayObject.children.length - 1; i >= 0; i--) {	
-            displayObject.removeChild(displayObject.children[i]);
-        };
+    // function removeAllLettersFrom(displayObject) {
+    //     for (var i = displayObject.children.length - 1; i >= 0; i--) {	
+    //         displayObject.removeChild(displayObject.children[i]);
+    //     };
+    // }
+
+
+
+    function isValidAnagram(basePhrase, anagram) {
+        // Inbuilt functions to rearrange the string
+        const str1 = basePhrase.split(' ').join('').split('\n').join('').split('').sort().join(''); 
+        const str2 = anagram.split(' ').join('').split('\n').join('').split('').sort().join('');
+        return (str1 === str2);
+    }
+
+    function getAnagram(anagrams, currentText) {
+        let newAnagram;
+        do {
+            const ind = Math.floor(anagrams.length* Math.random());
+            newAnagram = anagrams[ind];
+            console.log('~~~', newAnagram);
+        } while (newAnagram === currentText)
+        return newAnagram;
     }
      
     function onResize() {	
         const w = window.innerWidth/devicePixelRatio;
         const h = window.innerHeight/devicePixelRatio;
-        app.renderer.resize(w, h);
+        if (app) app.renderer.resize(w, h);
   
         if (centerPoint) {
             centerPoint.position.set(0.5 * w, 0.5 * h);
         }
     }
+    onResize();
+
+function createLetterSprites(letterObjs) {
+    console.log('createLetterSprites:', letterObjs);
+    for (let i=0; i<letterObjs.length; i++) {
+        let letter = letterObjs[i];
+        console.log(letter);
+        if (letter.id) {
+            console.log("sprite me:",letter.id);
+            const sprite = PIXI.Sprite.from(app.loader.resources[letter.id].texture); // Magically load the PNG asynchronously
+            letter.sprite = sprite;
+            sprite.position.x = letter.destX;
+            sprite.position.y = letter.destY;
+            centerPoint.addChild(sprite);
+        }            
+    }
+}
+
+    function onAppProgress(e) {
+        console.log('loading:', e.progress);
+    }
+
+    function onAppError(e) {
+        console.log('error:', e.message);
+    }
+
+    function onAppLoaded(e) {
+        console.log('LOADED!!!');
+        console.log(letters);
+        createLetterSprites(letters);        
+    }
 
     window.addEventListener('resize', onResize);
-
-    let app = new PIXI.Application({ resolution: devicePixelRatio });
+    var app = new PIXI.Application({ resolution: devicePixelRatio });
     const cont = document.querySelector('.container'); 
     cont.appendChild(app.view);
-    const centerPoint = new PIXI.Container();
+    var centerPoint = new PIXI.Container();
     app.stage.addChild(centerPoint);
 
-      onResize();
+    let currentPhrase = siteTitle;
+
+    // TODO: load all assets here
+    app.loader.baseUrl = 'assets/';
+    for (const letter of letters) {
+        if (letter.id) {
+            console.log(letter.id);
+            app.loader.add(letter.id, letter.id + '.png');
+        }
+    }
+    app.loader.onProgress.add(onAppProgress);
+    app.loader.onError.add(onAppError);
+    app.loader.onComplete.add(onAppLoaded);
+    console.log('start laod');
+    app.loader.load();
+
+    // TODO: fade in
+    
+    let ana = siteTitle;
+    showNewAnagram(ana);
+
+    function showNewAnagram(anagram) {
+        if (isValidAnagram(siteTitle, anagram)) { // error check
+            const lines = anagram.split('\n'); // split anagram into an array of "lines"
+            const lineArray = getLetterObjArray(lines, letters); // prepare for positioning - put letter objects in proper order 
+            const objectArray = calculateLetterObjPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
+            // TODO: this sucks. get rid of objectArray and only work with letters array
+            swapLetters(objectArray, true);
+        }
+    }
+      
     </script>
   </body>
 </html>
