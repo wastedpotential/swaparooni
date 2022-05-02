@@ -36,7 +36,7 @@
                 if (letters[i].used) letters[i].used = false;
             }
             let ana = getAnagram(anagrams, currentPhrase);
-            showNewAnagram(ana);
+            currentPhrase = showNewAnagram(ana);
             changePageTitle(ana);
         }
 
@@ -121,17 +121,6 @@
             return newAnagram;
         }
      
-        function onResize() {	
-            const w = window.innerWidth/devicePixelRatio;
-            const h = window.innerHeight/devicePixelRatio;
-            if (app) app.renderer.resize(w, h);
-    
-            if (centerPoint) {
-                centerPoint.position.set(0.5 * w, 0.5 * h);
-            }
-        }
-        onResize(); // TODO - fix order of operations so this works
-
         function createLetterSprites(letterObjs) {
             for (let i=0; i<letterObjs.length; i++) {
                 let letter = letterObjs[i];
@@ -160,19 +149,17 @@
         }
 
         window.addEventListener('resize', onResize);
-        var app = new PIXI.Application({ resolution: devicePixelRatio });
+        var app = new PIXI.Application({ resolution: devicePixelRatio, backgroundColor: 0xf1f4f9 });
         const cont = document.querySelector('.container'); 
         cont.appendChild(app.view);
         var centerPoint = new PIXI.Container();
         app.stage.addChild(centerPoint);
 
-        let currentPhrase = siteTitle;
-
         // TODO: load all assets here
-        app.loader.baseUrl = 'assets/';
+        app.loader.baseUrl = 'assets/letters/';
         for (const letter of letters) {
             if (letter.id) {
-                app.loader.add(letter.id, letter.id + '.png');
+                app.loader.add(letter.id, letter.id + '_01.png');
             }
         }
         app.loader.onProgress.add(onAppProgress);
@@ -182,8 +169,9 @@
 
         // TODO: fade in
     
-        let ana = siteTitle;
-        showNewAnagram(ana);
+        // start with "wasted potential":
+        let currentPhrase = showNewAnagram(siteTitle);
+        //currentPhrase);
 
         function showNewAnagram(anagram) {
             if (isValidAnagram(siteTitle, anagram)) { // error check // TODO - what if not valid?
@@ -196,6 +184,17 @@
                 console.log("INVALID ANAGRAM");
             }
         }
+
+        function onResize() {	
+            const w = window.innerWidth/devicePixelRatio;
+            const h = window.innerHeight/devicePixelRatio;
+            if (app) app.renderer.resize(w, h);
+    
+            if (centerPoint) {
+                centerPoint.position.set(0.5 * w, 0.5 * h);
+            }
+        }
+        onResize(); 
       
     </script>
   </body>

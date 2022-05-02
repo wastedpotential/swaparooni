@@ -1,11 +1,5 @@
 const siteTitle = 'wasted\npotential';
 const anagrams = [
-    'wasted\npotential',
-    'wasted\npotential',
-    'wasted\npotential',
-    'wasted\npotential',
-    'wasted\npotential',
-    'wasted\npotential',
     'salted\nnewt\npatio',
     'wipe\ndental\nstoat',
     'wean\nspittle\ntoad',
@@ -14,7 +8,7 @@ const anagrams = [
     'tepid snot\ntea law',
 ]
 
-const letterHeight = 50; // all letters must be same height
+const letterHeight = 60; // all letters must be same height
 const assetFolder = 'assets/';
 const letters = [
     {
@@ -23,8 +17,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'w1.png',
+        w: 38,
+        img: 'w1_01.png',
         sprite: null,
     },
     {
@@ -33,8 +27,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'a1.png',
+        w: 38,
+        img: 'a1_01.png',
         sprite: null,
     },
     {
@@ -43,8 +37,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 's1.png',
+        w: 38,
+        img: 's1_01.png',
         sprite: null,
     },
     {
@@ -53,8 +47,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 't1.png',
+        w: 38,
+        img: 't1_01.png',
         sprite: null,
     },
     {
@@ -63,8 +57,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'e1.png',
+        w: 38,
+        img: 'e1_01.png',
         sprite: null,
     },
     {
@@ -73,8 +67,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'd1.png',
+        w: 38,
+        img: 'd1_01.png',
         sprite: null,
     },
     {
@@ -83,8 +77,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'p1.png',
+        w: 38,
+        img: 'p1_01.png',
         sprite: null,
     },
     {
@@ -93,8 +87,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'o1.png',
+        w: 38,
+        img: 'o1_01.png',
         sprite: null,
     },
     {
@@ -103,8 +97,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 't2.png',
+        w: 38,
+        img: 't2_01.png',
         sprite: null,
     },
     {
@@ -113,8 +107,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'e2.png',
+        w: 38,
+        img: 'e2_01.png',
         sprite: null,
     },
     {
@@ -123,8 +117,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'n1.png',
+        w: 38,
+        img: 'n1_01.png',
         sprite: null,
     },
     {
@@ -133,8 +127,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 't3.png',
+        w: 38,
+        img: 't3_01.png',
         sprite: null,
     },
     {
@@ -143,8 +137,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'i1.png',
+        w: 38,
+        img: 'i1_01.png',
         sprite: null,
     },
     {
@@ -153,8 +147,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'a2.png',
+        w: 38,
+        img: 'a2_01.png',
         sprite: null,
     },
     {
@@ -163,8 +157,8 @@ const letters = [
         used: false,
         destX: 0,
         destY: 0,
-        w: 50,
-        img: 'l1.png',
+        w: 38,
+        img: 'l1_01.png',
         sprite: null,
     },
     {
