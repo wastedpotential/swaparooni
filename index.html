@@ -92,12 +92,44 @@
       
 // ==================== VIEW STUFF =========================
 
+        function scatterLetters(lineArray, animated=true) {
+            let scat = 0;
+            for (let i=0; i<letters.length; i++) {
+                const ltr = letters[i];
+                if (ltr.sprite && animated) {
+                    let currX = ltr.sprite.position.x;
+                    let currY = ltr.sprite.position.y;
+                    // TODO: change this calculation:
+                    if (currX > 0) {
+                        currX = (window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currX;
+                    } else {
+                        currX = (-1*window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currX;
+                    }
+                    if (currY > 0) {
+                        currY = (window.innerWidth/4*devicePixelRatio - currY)*Math.random() + currY;
+                    } else {
+                        currY = (-1*window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currY;
+                    }
+                    gsap.to(ltr.sprite, { 
+                        x: currX, 
+                        y: currY, 
+                        duration: 0.3, 
+                        ease: "power1.out", 
+                        onComplete() {
+                            scat += 1;
+                            if (scat >= 15) { swapLetters(null); }
+                        }
+                    });
+                }
+            }
+        }
+
         function swapLetters(lineArray, animated=true) {
             for (let i=0; i<letters.length; i++) { // TODO - change the style of for loop? everywhere?
                 const ltr = letters[i];
                 if (ltr.sprite) { // don't render spaces. duh.
                     if (animated) {
-                        gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3 });
+                        gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3, ease: "power1.in" });
                     } else {
                         ltr.sprite.position.x = ltr.destX;
                         ltr.sprite.position.y = ltr.destY;
@@ -170,7 +202,7 @@
         // TODO: fade in
     
         // start with "wasted potential":
-        let currentPhrase = showNewAnagram(siteTitle);
+        let currentPhrase = showNewAnagram(siteTitle, false);
         //currentPhrase);
 
         function showNewAnagram(anagram) {
@@ -179,7 +211,7 @@
                 const lineArray = getLetterObjArray(lines, letters); // prepare for positioning - put letter objects in proper order 
                 const objectArray = calculateLetterObjPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
                 // TODO: this sucks. get rid of objectArray and only work with letters array
-                swapLetters(objectArray, true);
+                scatterLetters(objectArray, true);
             } else {
                 console.log("INVALID ANAGRAM");
             }
