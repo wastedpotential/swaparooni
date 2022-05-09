@@ -18,7 +18,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'w1_01.png',
+        img: ['w1_01.png', 'w1_02.png', 'w1_03.png', 'w1_04.png'],
         sprite: null,
     },
     {
@@ -28,7 +28,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'a1_01.png',
+        img: ['a1_01.png', 'a1_02.png', 'a1_03.png', 'a1_04.png'],
         sprite: null,
     },
     {
@@ -38,7 +38,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 's1_01.png',
+        img: ['s1_01.png', 's1_02.png', 's1_03.png', 's1_04.png'],
         sprite: null,
     },
     {
@@ -48,7 +48,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 't1_01.png',
+        img: ['t1_01.png', 't1_02.png', 't1_03.png', 't1_04.png'],
         sprite: null,
     },
     {
@@ -58,7 +58,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'e1_01.png',
+        img: ['e1_01.png', 'e1_02.png', 'e1_03.png', 'e1_04.png'],
         sprite: null,
     },
     {
@@ -68,7 +68,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'd1_01.png',
+        img: ['d1_01.png', 'd1_02.png', 'd1_03.png', 'd1_04.png'],
         sprite: null,
     },
     {
@@ -78,7 +78,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'p1_01.png',
+        img: ['p1_01.png', 'p1_02.png', 'p1_03.png', 'p1_04.png'],
         sprite: null,
     },
     {
@@ -88,7 +88,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'o1_01.png',
+        img: ['o1_01.png', 'o1_02.png', 'o1_03.png', 'o1_04.png'],
         sprite: null,
     },
     {
@@ -98,7 +98,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 't2_01.png',
+        img: ['t2_01.png', 't2_02.png', 't2_03.png', 't2_04.png'],
         sprite: null,
     },
     {
@@ -108,7 +108,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'e2_01.png',
+        img: ['e2_01.png', 'e2_02.png', 'e2_03.png', 'e2_04.png'],
         sprite: null,
     },
     {
@@ -118,7 +118,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'n1_01.png',
+        img: ['n1_01.png', 'n1_02.png', 'n1_03.png', 'n1_04.png'],
         sprite: null,
     },
     {
@@ -128,7 +128,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 't3_01.png',
+        img: ['t3_01.png', 't3_02.png', 't3_03.png', 't3_04.png'],
         sprite: null,
     },
     {
@@ -138,7 +138,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'i1_01.png',
+        img: ['i1_01.png', 'i1_02.png', 'i1_03.png', 'i1_04.png'],
         sprite: null,
     },
     {
@@ -148,7 +148,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'a2_01.png',
+        img: ['a2_01.png', 'a2_02.png', 'a2_03.png', 'a2_04.png'],
         sprite: null,
     },
     {
@@ -158,7 +158,7 @@ const letters = [
         destX: 0,
         destY: 0,
         w: 38,
-        img: 'l1_01.png',
+        img: ['l1_01.png', 'l1_02.png', 'l1_03.png', 'l1_04.png'],
         sprite: null,
     },
     {
