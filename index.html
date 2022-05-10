@@ -29,8 +29,6 @@
           <button type="button" onclick="onSwapPress()">Tweiner</button>
         </div>
     <script>
-        // TODO - move everything to separate files
-        // TODO - make code more functional
         // TODO: add timer to switch back to main site title after a short time
 
         const animationTypes = {
@@ -113,6 +111,11 @@
             }
         }
      
+        function showNew(phrase, animation) {
+            prepForAnimation(phrase, letters, animation);   
+            animateSwap(phrase, letters, animation);             
+        }
+
         function createLetterSprites(letterObjs) {
             for (let i=0; i<letterObjs.length; i++) {
                 let letter = letterObjs[i];
@@ -138,6 +141,10 @@
             createLetterSprites(letters); 
             // start with "wasted potential":
             currentPhrase = showNew(siteTitle, animationTypes.NONE);
+            const centerY = centerPoint.position.y;
+            centerPoint.position.y += 25;
+            gsap.to(filter, { alpha: 1, duration: 1 });  
+            gsap.to(centerPoint, { y: centerY, duration: 1 });           
         }
 
         function initApp() {
@@ -150,6 +157,9 @@
 
         let app = initApp();
         centerPoint = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+        const filter = new PIXI.filters.AlphaFilter(1);
+        centerPoint.filters = [filter];
+        filter.alpha = 0; 
         app.stage.addChild(centerPoint);  
         preload();      
 
@@ -165,14 +175,6 @@
             app.loader.onError.add(onAppError);
             app.loader.onComplete.add(onAppLoaded);
             app.loader.load();
-        }
-        
-
-        // TODO: fade in
-
-        function showNew(phrase, animation) {
-            prepForAnimation(phrase, letters, animation);   
-            animateSwap(phrase, letters, animation);             
         }
 
         function onResize() {	
