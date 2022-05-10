@@ -2,7 +2,8 @@
 <html>
   <head>
     <script src="https://pixijs.download/release/pixi.js"></script>
-    <script src="assets.js"></script>
+    <script src="scripts/assets.js"></script>
+    <script src="scripts/utils.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
     <style>
         html, body {
@@ -31,13 +32,22 @@
         // TODO - move everything to separate files
         // TODO - make code more functional
         // TODO: add timer to switch back to main site title after a short time
+
+        const animationTypes = {
+            NONE: 'none',
+            SLIDEY: 'slidey',
+            EXPLODEY: 'explodey',
+        }
+        let currentPhrase = '';
+
         function tweenIt() {
             for (let i=0; i<letters.length; i++) {
                 if (letters[i].used) letters[i].used = false;
             }
-            let ana = getAnagram(anagrams, currentPhrase);
-            currentPhrase = showNewAnagram(ana);
-            changePageTitle(ana);
+            let newIndex = uniqueRandomIndex(anagrams.length, anagrams.indexOf(currentPhrase));
+            currentPhrase = anagrams[newIndex];
+            showNew(currentPhrase, animationTypes.SLIDEY);
+            changePageTitle(currentPhrase);
         }
 
         function populateLetterArrays(str, objectArray) {
@@ -92,65 +102,66 @@
       
 // ==================== VIEW STUFF =========================
 
-        function scatterLetters(lineArray, animated=true) {
-            let scat = 0;
-            for (let i=0; i<letters.length; i++) {
-                const ltr = letters[i];
-                if (ltr.sprite && animated) {
-                    let currX = ltr.sprite.position.x;
-                    let currY = ltr.sprite.position.y;
-                    // TODO: change this calculation:
-                    if (currX > 0) {
-                        currX = (window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currX;
-                    } else {
-                        currX = (-1*window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currX;
-                    }
-                    if (currY > 0) {
-                        currY = (window.innerWidth/4*devicePixelRatio - currY)*Math.random() + currY;
-                    } else {
-                        currY = (-1*window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currY;
-                    }
-                    gsap.to(ltr.sprite, { 
-                        x: currX, 
-                        y: currY, 
-                        duration: 0.3, 
-                        ease: "power1.out", 
-                        onComplete() {
-                            scat += 1;
-                            if (scat >= 15) { swapLetters(null); }
+        function swapLetters(phrase, letters, animation) {
+            console.log('=====\n', phrase, '\n', letters, '\n', animation);
+            // prep for animation:
+            if (animation === animationTypes.EXPLODEY) {
+                let scat = 0;
+                for (let i=0; i<letters.length; i++) {
+                    const ltr = letters[i];
+                    if (ltr.sprite) {
+                        let currX = ltr.sprite.position.x;
+                        let currY = ltr.sprite.position.y;
+                        // TODO: change this calculation:
+                        if (currX > 0) {
+                            currX = (window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currX;
+                        } else {
+                            currX = (-1*window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currX;
                         }
-                    });
+                        if (currY > 0) {
+                            currY = (window.innerWidth/4*devicePixelRatio - currY)*Math.random() + currY;
+                        } else {
+                            currY = (-1*window.innerWidth/4*devicePixelRatio - currX)*Math.random() + currY;
+                        }
+                        ltr.destX = currX;
+                        ltr.destY = currY;
+                    }
                 }
+            } else { // slidey, none
+                const phraseLines = phrase.split('\n'); // split anagram into an array of "lines"
+                const lineArray = getLetterObjArray(phraseLines, letters); // prepare for positioning - put letter objects in proper order 
+                const letterArray = calculateLetterObjPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
+                
             }
-        }
 
-        function swapLetters(lineArray, animated=true) {
+            // animate:
+            let counter = 0;
             for (let i=0; i<letters.length; i++) { // TODO - change the style of for loop? everywhere?
                 const ltr = letters[i];
-                if (ltr.sprite) { // don't render spaces. duh.
-                    if (animated) {
-                        gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3, ease: "power1.in" });
-                    } else {
-                        ltr.sprite.position.x = ltr.destX;
-                        ltr.sprite.position.y = ltr.destY;
-                    }                
+                if (ltr.sprite) { // don't render spaces. duh.                    
+                    switch (animation) {
+                        case animationTypes.NONE:
+                            ltr.sprite.position.x = ltr.destX;
+                            ltr.sprite.position.y = ltr.destY;
+                            break;
+                        case animationTypes.SLIDEY:
+                            gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3, ease: "power1.in" });
+                            break;
+                        case animationTypes.EXPLODEY:
+                        gsap.to(ltr.sprite, { 
+                            x: ltr.destX, 
+                            y: ltr.destY, 
+                            duration: 0.3, 
+                            ease: "power1.out", 
+                            onComplete() {
+                                counter += 1;
+                                // TODO: magic numbers are bad
+                                if (counter >= 15) { swapLetters(phrase, letters, animationTypes.SLIDEY); }
+                            }
+                        });
+                    }                           
                 }
             }
-        }
-
-        function isValidAnagram(basePhrase, anagram) {
-            const str1 = basePhrase.split(' ').join('').split('\n').join('').split('').sort().join(''); 
-            const str2 = anagram.split(' ').join('').split('\n').join('').split('').sort().join('');
-            return (str1 === str2);
-        }
-
-        function getAnagram(anagrams, currentText) {
-            let newAnagram;
-            do {
-                const ind = Math.floor(anagrams.length* Math.random());
-                newAnagram = anagrams[ind];
-            } while (newAnagram === currentText)
-            return newAnagram;
         }
      
         function createLetterSprites(letterObjs) {
@@ -159,8 +170,6 @@
                 if (letter.id) {
                     const sprite = PIXI.Sprite.from(app.loader.resources[letter.id].texture, { roundPixels: true, resolution: devicePixelRatio }); // Magically load the PNG asynchronously
                     letter.sprite = sprite;
-                    sprite.position.x = letter.destX;
-                    sprite.position.y = letter.destY;
                     centerPoint.addChild(sprite);
                 }            
             }
@@ -177,7 +186,10 @@
         }
 
         function onAppLoaded(e) {
-            createLetterSprites(letters);        
+            createLetterSprites(letters); 
+            // start with "wasted potential":
+            currentPhrase = showNew(siteTitle, animationTypes.NONE);
+               
         }
 
         window.addEventListener('resize', onResize);
@@ -200,20 +212,12 @@
         app.loader.load();
 
         // TODO: fade in
-    
-        // start with "wasted potential":
-        let currentPhrase = showNewAnagram(siteTitle, false);
-        //currentPhrase);
 
-        function showNewAnagram(anagram) {
-            if (isValidAnagram(siteTitle, anagram)) { // error check // TODO - what if not valid?
-                const lines = anagram.split('\n'); // split anagram into an array of "lines"
-                const lineArray = getLetterObjArray(lines, letters); // prepare for positioning - put letter objects in proper order 
-                const objectArray = calculateLetterObjPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
-                // TODO: this sucks. get rid of objectArray and only work with letters array
-                scatterLetters(objectArray, true);
+        function showNew(phrase, animation) {
+            if (isAnagram(siteTitle, phrase)) { // error check 
+                swapLetters(phrase, letters, animation);                
             } else {
-                console.log("INVALID ANAGRAM");
+                console.log("INVALID ANAGRAM"); // TODO - what if not valid?
             }
         }
 
@@ -226,8 +230,8 @@
                 centerPoint.position.set(0.5 * w, 0.5 * h);
             }
         }
-        onResize(); 
-      
+
+        onResize();      
     </script>
   </body>
 </html>
