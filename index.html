@@ -37,13 +37,25 @@
             EXPLODEY: 'explodey',
         }
         let currentPhrase = '';
-        let centerPoint;
+        let centerPoint, timeoutId;
 
         function onSwapPress() {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
             reset(letters);
             let newIndex = uniqueRandomIndex(anagrams.length, anagrams.indexOf(currentPhrase));
-            currentPhrase = anagrams[newIndex];
-            showNew(currentPhrase, animationTypes.EXPLODEY);
+            currentPhrase = showNew(anagrams[newIndex], animationTypes.EXPLODEY);
+            changePageTitle(currentPhrase);
+            timeoutId = setTimeout(() => {
+                revertToSiteTitle();
+            }, 3000);
+        }
+
+        function revertToSiteTitle() {
+            reset(letters);
+            currentPhrase = showNew(siteTitle, animationTypes.SLIDEY);
             changePageTitle(currentPhrase);
         }
 
@@ -113,7 +125,8 @@
      
         function showNew(phrase, animation) {
             prepForAnimation(phrase, letters, animation);   
-            animateSwap(phrase, letters, animation);             
+            animateSwap(phrase, letters, animation); 
+            return phrase;            
         }
 
         function createLetterSprites(letterObjs) {
