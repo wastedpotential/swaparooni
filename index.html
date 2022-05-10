@@ -26,7 +26,7 @@
   <body>
       <div class="container"></div>
       <div class="menu">
-          <button type="button" onclick="tweenIt()">Tweiner</button>
+          <button type="button" onclick="onSwapPress()">Tweiner</button>
         </div>
     <script>
         // TODO - move everything to separate files
@@ -39,62 +39,16 @@
             EXPLODEY: 'explodey',
         }
         let currentPhrase = '';
+        let centerPoint;
 
-        function tweenIt() {
-            for (let i=0; i<letters.length; i++) {
-                if (letters[i].used) letters[i].used = false;
-            }
+        function onSwapPress() {
+            reset(letters);
             let newIndex = uniqueRandomIndex(anagrams.length, anagrams.indexOf(currentPhrase));
             currentPhrase = anagrams[newIndex];
             showNew(currentPhrase, animationTypes.EXPLODEY);
             changePageTitle(currentPhrase);
         }
 
-        function populateLetterArrays(str, objectArray) {
-            const line = [];
-            for (var i = 0; i < str.length; i++) {
-                const nextLetter = str.charAt(i);
-                const letterObj = objectArray.find(e => {
-                    return !(e.used) && (e.char == nextLetter);
-                });
-                line.push(letterObj);
-                letterObj.used = true;
-            }
-            return line;
-        }
-
-        function totalWidth(items) {
-            var total = items.reduce(
-                (partialSum, a) => partialSum + a.w, 0
-            );
-            return total;
-        }
-      
-        function getLetterObjArray(stringArray, letterObjectsArray) {
-            const lineArray = [];
-            for (const str of stringArray) {
-                lineArray.push(populateLetterArrays(str, letterObjectsArray));
-            }
-            return lineArray;
-        }
-      
-        function calculateLetterObjPositions(lineArray, letterHeight) {
-            const startY = -0.5 * lineArray.length * letterHeight;
-            for (let i=0; i<lineArray.length; i++){
-                const line = lineArray[i];
-                const totalW = totalWidth(line);
-                let lineX = -0.5 * totalW;
-                const lineStartY = i * letterHeight + startY;
-                for (let j=0; j<line.length; j++) {
-                    const ltr = line[j];
-                    ltr.destX = lineX;
-                    ltr.destY = lineStartY;
-                    lineX += line[j].w;
-                }
-            }
-            return lineArray;
-        }
-        
         function changePageTitle(phrase) {
             const newTitle = phrase.split('\n').join(' ');
             document.title = newTitle;
@@ -124,8 +78,8 @@
                 }
             } else { // slidey, none
                 const phraseLines = phrase.split('\n'); // split anagram into an array of "lines"
-                const lineArray = getLetterObjArray(phraseLines, letters); // prepare for positioning - put letter objects in proper order 
-                const letterArray = calculateLetterObjPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
+                const lineArray = getLineArray(phraseLines, letters); // prepare for positioning - put letter objects in proper order 
+                const letterArray = calculateLetterPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
             }
         }
 
@@ -184,27 +138,35 @@
             createLetterSprites(letters); 
             // start with "wasted potential":
             currentPhrase = showNew(siteTitle, animationTypes.NONE);
-               
         }
 
-        window.addEventListener('resize', onResize);
-        var app = new PIXI.Application({ autoResize:true, resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
-        const cont = document.querySelector('.container'); 
-        cont.appendChild(app.view);
-        var centerPoint = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
-        app.stage.addChild(centerPoint);
+        function initApp() {
+            window.addEventListener('resize', onResize);
+            let app = new PIXI.Application({ autoResize:true, resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+            const cont = document.querySelector('.container'); 
+            cont.appendChild(app.view);
+            return app;
+        }
 
-        // TODO: load all assets here
-        app.loader.baseUrl = 'assets/letters/';
-        for (const letter of letters) {
-            if (letter.id) {
-                app.loader.add(letter.id, letter.id + '_01@2x.png');
+        let app = initApp();
+        centerPoint = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+        app.stage.addChild(centerPoint);  
+        preload();      
+
+        function preload() {
+            // TODO: load all assets here
+            app.loader.baseUrl = 'assets/letters/';
+            for (const letter of letters) {
+                if (letter.id) {
+                    app.loader.add(letter.id, letter.id + '_01@2x.png');
+                }
             }
+            app.loader.onProgress.add(onAppProgress);
+            app.loader.onError.add(onAppError);
+            app.loader.onComplete.add(onAppLoaded);
+            app.loader.load();
         }
-        app.loader.onProgress.add(onAppProgress);
-        app.loader.onError.add(onAppError);
-        app.loader.onComplete.add(onAppLoaded);
-        app.loader.load();
+        
 
         // TODO: fade in
 
