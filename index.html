@@ -37,7 +37,7 @@
             EXPLODEY: 'explodey',
         }
         let currentPhrase = '';
-        let centerPoint, timeoutId;
+        let centerPoint, footer, timeoutId;
 
         function onSwapPress() {
             if (timeoutId) {
@@ -140,6 +140,12 @@
             }
         }
 
+        function createCopyright() {
+            const copyright = PIXI.Sprite.from(app.loader.resources['copyright'].texture, { roundPixels: true, resolution: devicePixelRatio }); // Magically load the PNG asynchronously
+            copyright.position.set(-60 - copyright.width, -1 * copyright.height);
+            footer.addChild(copyright);
+        }
+
         function onAppProgress(e) {
             // TODO
             console.log('loading:', e.progress);
@@ -152,6 +158,7 @@
 
         function onAppLoaded(e) {
             createLetterSprites(letters); 
+            createCopyright();
             // start with "wasted potential":
             currentPhrase = showNew(siteTitle, animationTypes.NONE);
             const centerY = centerPoint.position.y;
@@ -173,7 +180,10 @@
         const filter = new PIXI.filters.AlphaFilter(1);
         centerPoint.filters = [filter];
         filter.alpha = 0; 
-        app.stage.addChild(centerPoint);  
+        app.stage.addChild(centerPoint);
+        
+        footer = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+        app.stage.addChild(footer);
         preload();      
 
         function preload() {
@@ -184,6 +194,7 @@
                     app.loader.add(letter.id, letter.id + '_01@2x.png');
                 }
             }
+            app.loader.add('copyright', 'copyright@2x.png');
             app.loader.onProgress.add(onAppProgress);
             app.loader.onError.add(onAppError);
             app.loader.onComplete.add(onAppLoaded);
@@ -197,6 +208,10 @@
     
             if (centerPoint) {
                 centerPoint.position.set(0.5 * w, 0.5 * h);
+            }
+            if (footer) {
+                console.log(w, h);
+                footer.position.set(w, h);
             }
         }
 
