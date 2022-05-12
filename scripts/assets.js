@@ -1,5 +1,5 @@
-const siteTitle = 'wasted\npotential';
-const anagrams = [
+export const siteTitle = 'wasted\npotential';
+export const anagrams = [
     'salted\nnewt\npatio',
     'wipe\ndental\nstoat',
     'wean\nspittle\ntoad',
@@ -8,9 +8,9 @@ const anagrams = [
     'tepid snot\ntea law',
 ]
 
-const letterHeight = 60; // all letters must be same height
-const assetFolder = 'assets/';
-const letters = [
+export const letterHeight = 60; // all letters must be same height
+export const assetFolder = 'assets/';
+export const letters = [
     {
         char: 'w',
         id: 'w1',

@@ -1,4 +1,4 @@
-function uniqueRandomIndex(length, currentVal=-1) {
+export function uniqueRandomIndex(length, currentVal=-1) {
     // TODO: throw error if length < 2
     let newVal;
     do {
@@ -8,26 +8,26 @@ function uniqueRandomIndex(length, currentVal=-1) {
     return newVal;
 }
 
-function isAnagram(str1, str2) {
+export function isAnagram(str1, str2) {
     const str1Trimmed = str1.split(' ').join('').split('\n').join('').split('').sort().join(''); 
     const str2Trimmed = str2.split(' ').join('').split('\n').join('').split('').sort().join('');
     return (str1Trimmed === str2Trimmed);
 }
 
-function totalWidth(items) {
+export function totalWidth(items) {
     var total = items.reduce(
         (partialSum, a) => partialSum + a.w, 0
     );
     return total;
 }
 
-function reset(letters) {
+export function reset(letters) {
     for (let i=0; i<letters.length; i++) {
         if (letters[i].used) letters[i].used = false;
     }
 }
 
-function populateLetterArrays(str, letterArray) {
+export function populateLetterArrays(str, letterArray) {
     const line = [];
     for (var i = 0; i < str.length; i++) {
         const nextLetter = str.charAt(i);
@@ -40,7 +40,7 @@ function populateLetterArrays(str, letterArray) {
     return line;
 }
 
-function getLineArray(stringArray, letterObjectsArray) {
+export function getLineArray(stringArray, letterObjectsArray) {
     const lines = [];
     for (const str of stringArray) {
         lines.push(populateLetterArrays(str, letterObjectsArray));
@@ -48,7 +48,7 @@ function getLineArray(stringArray, letterObjectsArray) {
     return lines;
 }
 
-function calculateLetterPositions(lineArray, letterHeight) {
+export function calculateLetterPositions(lineArray, letterHeight) {
     const startY = -0.5 * lineArray.length * letterHeight;
     for (let i=0; i<lineArray.length; i++) {
         const line = lineArray[i];
