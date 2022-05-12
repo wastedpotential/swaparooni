@@ -103,8 +103,9 @@ function createLetterSprites(letterObjs) {
     for (let i=0; i<letterObjs.length; i++) {
         let letter = letterObjs[i];
         if (letter.id) {     
-            const name = letter.id + "_01@2x.png";
-            const sprite = new PIXI.Sprite(sheet.textures[name]);
+            const sprite = new PIXI.AnimatedSprite(sheet.spritesheet.animations[letter.id]);
+            sprite.animationSpeed = 0.1;
+            sprite.play();
             letter.sprite = sprite;
             centerPoint.addChild(sprite);
         }            
@@ -112,7 +113,7 @@ function createLetterSprites(letterObjs) {
 }
 
 function createCopyright() {
-    const copyright = new PIXI.Sprite(sheet.textures['copyright@2x.png']); 
+    const copyright = new PIXI.Sprite(sheet.textures['copyright.png']); 
     copyright.position.set(-60 - copyright.width, -1 * copyright.height);
     footer.addChild(copyright);
 }
@@ -135,7 +136,7 @@ function onAppError(e) {
 }
 
 function onAppLoaded(e) {
-    sheet = app.loader.resources["assets/packed/assets@2x.json"];
+    sheet = app.loader.resources["assets/1x/packed.json"];
     createLetterSprites(letters); 
     createCopyright();
     // createButton();
@@ -175,16 +176,7 @@ addContainers();
 preload(); // assets are added and displayed in onComplete()
 
 function preload() {
-    // TODO: load all assets here
-    // app.loader.baseUrl = 'assets/packed/';
-    // for (const letter of letters) {
-    //     if (letter.id) {
-    //         app.loader.add(letter.id, letter.id + '_01@2x.png');
-    //     }
-    // }
-    // app.loader.add('copyright', 'copyright@2x.png');
-    // app.loader.add('press_bottom', 'press_bottom@2x.png');
-    app.loader.add('assets/packed/assets@2x.json');
+    app.loader.add('assets/1x/packed.json');
     app.loader.onProgress.add(onAppProgress);
     app.loader.onError.add(onAppError);
     app.loader.onComplete.add(onAppLoaded);
