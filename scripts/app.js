@@ -7,7 +7,7 @@ const animationTypes = {
     EXPLODEY: 'explodey',
 }
 let currentPhrase = '';
-let centerPoint, footer, filter, timeoutId;
+let centerPoint, footer, filter, timeoutId, sheet;
 
 function onSwapPress() {
     if (timeoutId) {
@@ -102,8 +102,9 @@ function showNew(phrase, animation) {
 function createLetterSprites(letterObjs) {
     for (let i=0; i<letterObjs.length; i++) {
         let letter = letterObjs[i];
-        if (letter.id) {
-            const sprite = PIXI.Sprite.from(app.loader.resources[letter.id].texture, { roundPixels: true, resolution: devicePixelRatio }); // Magically load the PNG asynchronously
+        if (letter.id) {     
+            const name = letter.id + "_01@2x.png";
+            const sprite = new PIXI.Sprite(sheet.textures[name]);
             letter.sprite = sprite;
             centerPoint.addChild(sprite);
         }            
@@ -111,7 +112,7 @@ function createLetterSprites(letterObjs) {
 }
 
 function createCopyright() {
-    const copyright = PIXI.Sprite.from(app.loader.resources['copyright'].texture, { roundPixels: true, resolution: devicePixelRatio }); // Magically load the PNG asynchronously
+    const copyright = new PIXI.Sprite(sheet.textures['copyright@2x.png']); 
     copyright.position.set(-60 - copyright.width, -1 * copyright.height);
     footer.addChild(copyright);
 }
@@ -134,9 +135,10 @@ function onAppError(e) {
 }
 
 function onAppLoaded(e) {
+    sheet = app.loader.resources["assets/packed/assets@2x.json"];
     createLetterSprites(letters); 
     createCopyright();
-    createButton();
+    // createButton();
     // start with "wasted potential":
     currentPhrase = showNew(siteTitle, animationTypes.NONE);
     const centerY = centerPoint.position.y;
@@ -174,15 +176,15 @@ preload(); // assets are added and displayed in onComplete()
 
 function preload() {
     // TODO: load all assets here
-    app.loader.baseUrl = 'assets/letters/';
-    for (const letter of letters) {
-        if (letter.id) {
-            app.loader.add(letter.id, letter.id + '_01@2x.png');
-        }
-    }
-    app.loader.add('copyright', 'copyright@2x.png');
-    app.loader.add('press_bottom', 'press_bottom@2x.png');
-    app.loader.add('press_top', 'press_top@2x.png');
+    // app.loader.baseUrl = 'assets/packed/';
+    // for (const letter of letters) {
+    //     if (letter.id) {
+    //         app.loader.add(letter.id, letter.id + '_01@2x.png');
+    //     }
+    // }
+    // app.loader.add('copyright', 'copyright@2x.png');
+    // app.loader.add('press_bottom', 'press_bottom@2x.png');
+    app.loader.add('assets/packed/assets@2x.json');
     app.loader.onProgress.add(onAppProgress);
     app.loader.onError.add(onAppError);
     app.loader.onComplete.add(onAppLoaded);
