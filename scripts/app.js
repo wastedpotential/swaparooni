@@ -189,7 +189,6 @@ function onResize() {
         centerPoint.position.set(0.5 * w, 0.5 * h);
     }
     if (footer) {
-        console.log(w, h);
         footer.position.set(w, h);
     }
 }
