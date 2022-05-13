@@ -154,9 +154,6 @@ function initApp() {
     const cont = document.querySelector('.container'); 
     cont.appendChild(app.view);
 
-    // TODO: change this:
-    const button = document.querySelector('#swapbutton');
-    button.addEventListener('click', onSwapPress);
     return app;
 }
 

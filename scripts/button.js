@@ -10,7 +10,10 @@ export function button(sheet, onPressCallback) {
     buttonHolder.interactive = true;
     buttonHolder.on('mousedown', onButtonDown)
         .on('mouseup', onButtonUp)
-        .on('mouseupoutside', onButtonUp);
+        .on('mouseupoutside', onButtonUp)
+        .on('touchstart', onButtonDown)
+        .on('touchend', onButtonUp)
+        .on('touchendoutside', onButtonUp);
 
     function onButtonUp() {
         gsap.to(buttonTop, { y: 0, duration: .2, ease: "power2.in" });  
