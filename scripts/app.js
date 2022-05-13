@@ -1,5 +1,6 @@
 import {uniqueRandomIndex, isAnagram, totalWidth, reset, populateLetterArrays, getLineArray, calculateLetterPositions} from    './utils.js';
 import {siteTitle, anagrams, letterHeight, assetFolder, letters} from './assets.js';
+import {button} from './button.js';
 
 const animationTypes = {
     NONE: 'none',
@@ -119,10 +120,9 @@ function createCopyright() {
 }
 
 function createButton() {
-    const button = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
-    const buttonBottom = PIXI.Sprite.from(app.loader.resources['press_bottom'].texture, { roundPixels: true, resolution: devicePixelRatio }); // Magically load the PNG asynchronously
-    //buttonBottom.position.set(0, -1 * copyright.height);
-    button.addChild(buttonBottom);
+    const swapButton = button(sheet, onSwapPress);
+    swapButton.position.set(0, 130);
+    centerPoint.addChild(swapButton);
 }
 
 function onAppProgress(e) {
@@ -139,7 +139,7 @@ function onAppLoaded(e) {
     sheet = app.loader.resources["assets/1x/packed.json"];
     createLetterSprites(letters); 
     createCopyright();
-    // createButton();
+    createButton();
     // start with "wasted potential":
     currentPhrase = showNew(siteTitle, animationTypes.NONE);
     const centerY = centerPoint.position.y;
@@ -150,7 +150,7 @@ function onAppLoaded(e) {
 
 function initApp() {
     window.addEventListener('resize', onResize);
-    let app = new PIXI.Application({ autoResize:true, resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+    let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
     const cont = document.querySelector('.container'); 
     cont.appendChild(app.view);
 
