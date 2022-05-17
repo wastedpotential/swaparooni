@@ -1,12 +1,20 @@
 export function button(sheet, onPressCallback) {
 
-    const buttonHolder = new PIXI.Container();
-    const buttonBottom = new PIXI.Sprite(sheet.textures['press_bottom.png']); 
+    const buttonHolder = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+    
+    const texBottom = sheet.textures['press_bottom.png'];
+    const buttonBottom = new PIXI.Sprite(texBottom); 
     buttonHolder.addChild(buttonBottom);
-    const buttonTop = new PIXI.Sprite(sheet.textures['press_top.png']);
+    
+    const texTop = sheet.textures['press_top.png'];
+    const buttonTop = new PIXI.Sprite(texTop);
     buttonHolder.addChild(buttonTop);
+    
     buttonHolder.pivot.set(0.5 * buttonBottom.width, 0.5 * buttonBottom.height);
     
+    const filter = new PIXI.filters.AlphaFilter(1);
+    filter.alpha = 0;
+
     buttonHolder.interactive = true;
     buttonHolder.on('mousedown', onButtonDown)
         .on('mouseup', onButtonUp)

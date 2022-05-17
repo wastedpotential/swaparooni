@@ -1,6 +1,7 @@
 import {uniqueRandomIndex, isAnagram, totalWidth, reset, populateLetterArrays, getLineArray, calculateLetterPositions} from    './utils.js';
 import {siteTitle, anagrams, letterHeight, assetFolder, letters} from './assets.js';
 import {button} from './button.js';
+import { showComponent } from './displayUtils.js';
 
 const animationTypes = {
     NONE: 'none',
@@ -117,12 +118,14 @@ function createCopyright() {
     const copyright = new PIXI.Sprite(sheet.textures['copyright.png']); 
     copyright.position.set(-60 - copyright.width, -1 * copyright.height);
     footer.addChild(copyright);
+    showComponent(copyright, 1, 0.5);
 }
 
 function createButton() {
     const swapButton = button(sheet, onSwapPress);
     swapButton.position.set(0, 130);
-    centerPoint.addChild(swapButton);
+    centerPoint.addChild(swapButton); 
+    showComponent(swapButton, 1, 0.5);
 }
 
 function onAppProgress(e) {
@@ -144,13 +147,16 @@ function onAppLoaded(e) {
     currentPhrase = showNew(siteTitle, animationTypes.NONE);
     const centerY = centerPoint.position.y;
     centerPoint.position.y += 25;
-    gsap.to(filter, { alpha: 1, duration: 1 });  
-    gsap.to(centerPoint, { y: centerY, duration: 1 });           
+    gsap.to(centerPoint, { y: centerY, duration: 1 });
+    gsap.to(filter, { alpha: 1, duration: 1, onComplete: function() {
+        centerPoint.filters = null;
+    } });             
 }
 
 function initApp() {
     window.addEventListener('resize', onResize);
     let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+    // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
     const cont = document.querySelector('.container'); 
     cont.appendChild(app.view);
 
@@ -164,7 +170,7 @@ function addContainers() {
     centerPoint.filters = [filter];
     filter.alpha = 0; 
     
-    footer = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+    footer = new PIXI.Container();
     app.stage.addChild(footer);
 }
 
