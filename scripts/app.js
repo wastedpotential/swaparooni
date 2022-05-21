@@ -1,6 +1,7 @@
 import {uniqueRandomIndex, isAnagram, totalWidth, reset, populateLetterArrays, getLineArray, calculateLetterPositions} from    './utils.js';
 import {siteTitle, anagrams, letterHeight, assetFolder, letters} from './assets.js';
 import {button} from './button.js';
+import {copyright} from './copyright.js';
 import { showComponent } from './displayUtils.js';
 
 const animationTypes = {
@@ -115,10 +116,9 @@ function createLetterSprites(letterObjs) {
 }
 
 function createCopyright() {
-    const copyright = new PIXI.Sprite(sheet.textures['copyright.png']); 
-    copyright.position.set(-60 - copyright.width, -1 * copyright.height);
-    footer.addChild(copyright);
-    showComponent(copyright, 1, 0.5);
+    const copy = copyright(sheet); 
+    footer.addChild(copy);
+    showComponent(copy, 1, 0.5);
 }
 
 function createButton() {
@@ -155,7 +155,7 @@ function onAppLoaded(e) {
 
 function initApp() {
     window.addEventListener('resize', onResize);
-    let app = new PIXI.Application({ autoResize: true, resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+    let app = new PIXI.Application({ resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
     // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
     const cont = document.querySelector('.container'); 
     cont.appendChild(app.view);
@@ -172,6 +172,7 @@ function addContainers() {
     
     footer = new PIXI.Container();
     app.stage.addChild(footer);
+
 }
 
 let app = initApp();

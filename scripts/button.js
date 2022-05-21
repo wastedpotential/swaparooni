@@ -1,12 +1,14 @@
-export function button(sheet, onPressCallback) {
+//import {Sprite, Container, filters} from './PIXI';
+
+export function button(textureSheet, onPressCallback) {
 
     const buttonHolder = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
     
-    const texBottom = sheet.textures['press_bottom.png'];
+    const texBottom = textureSheet.textures['press_bottom.png'];
     const buttonBottom = new PIXI.Sprite(texBottom); 
     buttonHolder.addChild(buttonBottom);
     
-    const texTop = sheet.textures['press_top.png'];
+    const texTop = textureSheet.textures['press_top.png'];
     const buttonTop = new PIXI.Sprite(texTop);
     buttonHolder.addChild(buttonTop);
     
