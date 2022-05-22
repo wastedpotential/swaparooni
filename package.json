@@ -1,0 +1,41 @@
+{
+  "name": "swaparooni",
+  "version": "1.0.0",
+  "description": "just a weird interactive anagram swapping dealio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wastedpotential/swaparooni.git"
+  },
+  "author": "Andy Watt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wastedpotential/swaparooni/issues"
+  },
+  "homepage": "https://github.com/wastedpotential/swaparooni#readme",
+  "dependencies": {
+    "@pixi/app": "^6.3.2",
+    "@pixi/constants": "^6.3.2",
+    "@pixi/core": "^6.3.2",
+    "@pixi/display": "^6.3.2",
+    "@pixi/filter-alpha": "^6.3.2",
+    "@pixi/math": "^6.3.2",
+    "@pixi/runner": "^6.3.2",
+    "@pixi/settings": "^6.3.2",
+    "@pixi/sprite": "^6.3.2",
+    "@pixi/sprite-animated": "^6.3.2",
+    "@pixi/ticker": "^6.3.2",
+    "@pixi/utils": "^6.3.2"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0"
+  }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+        html, body {
+            position: relativ;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* prevent scrollbars */
+        }
+        .container {
+            position: absolute;
+        }
+        .menu {
+            position: absolute;
+        }
+    </style>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="<%= htmlWebpackPlugin.options.metaDesc %>" />
+
+  </head>
+  <body>
+      <div class="container"></div>
+  </body>
+</html>
