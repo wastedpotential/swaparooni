@@ -1,4 +1,5 @@
 import {Container, filters} from './pixi.js';
+import gsap from 'gsap';
 
 // fade in a provided component with provided delay and duration values
 export function showComponent(pixiComponent, duration=0.3, delay=0) {
