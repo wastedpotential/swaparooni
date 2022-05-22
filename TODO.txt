@@ -1,0 +1,5 @@
+- add babel
+- add uglify
+- figure out why spritesheet isn't loading
+- continue breaking index.js into components
+- eliminate global vars

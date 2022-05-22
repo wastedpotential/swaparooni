@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const { builtinModules } = require('module');
 
 module.exports = {
   plugins: [
@@ -10,14 +12,22 @@ module.exports = {
         template: './src/index.html',
         filename: 'index.html',
         inject: 'body'
-    })
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from:'src/assets',to:'assets'} 
+      ]
+    }), 
   ],
   mode: 'development',
-  // output: {
-  //   clean: true
-  // },
+    output: {
+      clean: true
+    },
   devServer: {
     static: './dist',
-    open: true
+    open: true,
+    devMiddleware: {
+      writeToDisk: true,
+    }
   }
 };
