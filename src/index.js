@@ -3,7 +3,7 @@ import {siteTitle, anagrams, letterHeight, assetFolder, letters} from './scripts
 import {button} from './scripts/button.js';
 import {copyright} from './scripts/copyright.js';
 import {showComponent} from './scripts/displayUtils.js';
-import {Application, AnimatedSprite, Container, Loader, filters} from './scripts/pixi.js';
+import {Application, AnimatedSprite, Container, Loader, filters} from 'pixi.js';
 import gsap from 'gsap';
 
 const animationTypes = {
