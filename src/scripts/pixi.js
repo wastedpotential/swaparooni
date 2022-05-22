@@ -7,6 +7,7 @@ import * as utils from '@pixi/utils';
 export { utils };
 export * from '@pixi/display';
 export * from '@pixi/core';
+export * from '@pixi/loaders';
 export * from '@pixi/sprite';
 export * from '@pixi/app';
 export * from '@pixi/sprite-animated';

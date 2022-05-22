@@ -2,7 +2,8 @@ import {uniqueRandomIndex, isAnagram, totalWidth, reset, populateLetterArrays, g
 import {siteTitle, anagrams, letterHeight, assetFolder, letters} from './assets.js';
 import {button} from './button.js';
 import {copyright} from './copyright.js';
-import { showComponent } from './displayUtils.js';
+import {showComponent} from './displayUtils.js';
+import {Application, AnimatedSprite, Container, filters} from './pixi.js';
 
 const animationTypes = {
     NONE: 'none',
@@ -106,7 +107,7 @@ function createLetterSprites(letterObjs) {
     for (let i=0; i<letterObjs.length; i++) {
         let letter = letterObjs[i];
         if (letter.id) {     
-            const sprite = new PIXI.AnimatedSprite(sheet.spritesheet.animations[letter.id]);
+            const sprite = new AnimatedSprite(sheet.spritesheet.animations[letter.id]);
             sprite.animationSpeed = 0.1;
             sprite.play();
             letter.sprite = sprite;
@@ -155,7 +156,7 @@ function onAppLoaded(e) {
 
 function initApp() {
     window.addEventListener('resize', onResize);
-    let app = new PIXI.Application({ resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+    let app = new Application({ resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
     // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
     const cont = document.querySelector('.container'); 
     cont.appendChild(app.view);
@@ -164,13 +165,13 @@ function initApp() {
 }
 
 function addContainers() {
-    centerPoint = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+    centerPoint = new Container({resolution: devicePixelRatio, roundPixels: true});
     app.stage.addChild(centerPoint);
-    filter = new PIXI.filters.AlphaFilter(1);
+    filter = new filters.AlphaFilter(1);
     centerPoint.filters = [filter];
     filter.alpha = 0; 
     
-    footer = new PIXI.Container();
+    footer = new Container();
     app.stage.addChild(footer);
 
 }

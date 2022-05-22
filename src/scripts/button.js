@@ -1,20 +1,20 @@
-// import {Sprite, Container, filters} from './pixi.js';
-import * as PIXI from './pixi.js'
+import {Sprite, Container, filters} from './pixi.js';
+
 export function button(textureSheet, onPressCallback) {
 
-    const buttonHolder = new PIXI.Container({resolution: devicePixelRatio, roundPixels: true});
+    const buttonHolder = new Container({resolution: devicePixelRatio, roundPixels: true});
     
     const texBottom = textureSheet.textures['press_bottom.png'];
-    const buttonBottom = new PIXI.Sprite(texBottom); 
+    const buttonBottom = new Sprite(texBottom); 
     buttonHolder.addChild(buttonBottom);
     
     const texTop = textureSheet.textures['press_top.png'];
-    const buttonTop = new PIXI.Sprite(texTop);
+    const buttonTop = new Sprite(texTop);
     buttonHolder.addChild(buttonTop);
     
     buttonHolder.pivot.set(0.5 * buttonBottom.width, 0.5 * buttonBottom.height);
     
-    const filter = new PIXI.filters.AlphaFilter(1);
+    const filter = new filters.AlphaFilter(1);
     filter.alpha = 0;
 
     buttonHolder.interactive = true;

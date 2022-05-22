@@ -13,9 +13,9 @@ module.exports = {
     })
   ],
   mode: 'development',
-  output: {
-    clean: true
-  },
+  // output: {
+  //   clean: true
+  // },
   devServer: {
     static: './dist',
     open: true
