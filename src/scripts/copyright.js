@@ -8,8 +8,5 @@ export function copyright(textureSheet) {
 	copyright.pivot.set(RIGHT_MARGIN + copyright.width, copyright.height);
 	copyrightHolder.addChild(copyright);
 
-	const filter = new filters.AlphaFilter(1);
-	filter.alpha = 0;
-
 	return copyrightHolder;
 }

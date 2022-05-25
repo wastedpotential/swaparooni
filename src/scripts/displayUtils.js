@@ -2,7 +2,7 @@ import { Container, filters } from 'pixi.js';
 import gsap from 'gsap';
 
 // fade in a provided component with provided delay and duration values
-export function showComponent(pixiComponent, duration = 0.3, delay = 0) {
+export function showComponent(pixiComponent, duration = 0.3, delay = 0, y = null) {
 	console.log('show');
 	const parent = pixiComponent.parent;
 	const holder = new Container(); //{resolution: devicePixelRatio, roundPixels: true});
@@ -18,6 +18,9 @@ export function showComponent(pixiComponent, duration = 0.3, delay = 0) {
 			holder.filters = null;
 		},
 	});
+	if (y) {
+		gsap.to(pixiComponent, { y, duration });
+	}
 }
 
 // hide: function(duration = 0.3, delay=0) {

@@ -14,9 +14,6 @@ export function button(textureSheet, onPressCallback) {
 
 	buttonHolder.pivot.set(0.5 * buttonBottom.width, 0.5 * buttonBottom.height);
 
-	const filter = new filters.AlphaFilter(1);
-	filter.alpha = 0;
-
 	buttonHolder.interactive = true;
 	buttonHolder.on('mousedown', onButtonDown).on('mouseup', onButtonUp).on('mouseupoutside', onButtonUp).on('touchstart', onButtonDown).on('touchend', onButtonUp).on('touchendoutside', onButtonUp);
 

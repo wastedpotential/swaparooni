@@ -2,10 +2,9 @@ import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
 import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
-import { Application, Container, Loader, filters } from 'pixi.js';
-import gsap from 'gsap';
+import { Application, Container, Loader } from 'pixi.js';
 
-let centerPoint, footerRight, filter, timeoutId, sheet, loader;
+let centerPoint, footerRight, timeoutId, sheet, loader;
 
 function onSwapPress() {
 	if (timeoutId) {
@@ -32,20 +31,21 @@ function changePageTitle(phrase) {
 function createLetterSprites() {
 	const ana = anagram(sheet);
 	centerPoint.addChild(ana);
-	//showComponent()
+	ana.position.set(0, 25);
+	showComponent(ana, 1, 0, 0);
+}
+
+function createButton() {
+	const swapButton = button(sheet, onSwapPress);
+	swapButton.position.set(0, 155);
+	centerPoint.addChild(swapButton);
+	showComponent(swapButton, 1, 0.5, 130);
 }
 
 function createCopyright() {
 	const copy = copyright(sheet);
 	footerRight.addChild(copy);
 	showComponent(copy, 1, 0.5);
-}
-
-function createButton() {
-	const swapButton = button(sheet, onSwapPress);
-	swapButton.position.set(0, 130);
-	centerPoint.addChild(swapButton);
-	showComponent(swapButton, 1, 0.5);
 }
 
 function onAppProgress(e) {
@@ -61,19 +61,8 @@ function onAppError(e) {
 function onAppLoaded(e) {
 	sheet = loader.resources['assets/1x/packed.json'];
 	createLetterSprites();
-	createCopyright();
 	createButton();
-	// start with "wasted potential":
-	const centerY = centerPoint.position.y;
-	centerPoint.position.y += 25;
-	gsap.to(centerPoint, { y: centerY, duration: 1 });
-	gsap.to(filter, {
-		alpha: 1,
-		duration: 1,
-		onComplete: function () {
-			centerPoint.filters = null;
-		},
-	});
+	createCopyright();
 }
 
 function initApp() {
@@ -88,10 +77,6 @@ function initApp() {
 function addContainers() {
 	centerPoint = new Container({ resolution: devicePixelRatio, roundPixels: true });
 	app.stage.addChild(centerPoint);
-	// TODO: move this alpha filter
-	filter = new filters.AlphaFilter(1);
-	centerPoint.filters = [filter];
-	filter.alpha = 0;
 
 	footerRight = new Container();
 	app.stage.addChild(footerRight);

@@ -19,18 +19,8 @@ export function anagram(textureSheet) {
 
 	currentPhrase = showNew(siteTitle, animationTypes.NONE);
 
-	const filter = new filters.AlphaFilter(1);
-	filter.alpha = 0;
-
 	return anagramHolder;
 }
-
-const animationTypes = {
-	NONE: 'none',
-	SLIDEY: 'slidey',
-	EXPLODEY: 'explodey',
-};
-let currentPhrase = '';
 
 export function goToNewAnagram() {
 	reset(letters);
@@ -44,6 +34,13 @@ export function goToSiteTitle() {
 	currentPhrase = showNew(siteTitle, animationTypes.SLIDEY);
 	return currentPhrase;
 }
+
+const animationTypes = {
+	NONE: 'none',
+	SLIDEY: 'slidey',
+	EXPLODEY: 'explodey',
+};
+let currentPhrase = '';
 
 function prepForAnimation(phrase, letters, animation) {
 	if (animation === animationTypes.EXPLODEY) {
