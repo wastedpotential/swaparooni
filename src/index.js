@@ -1,27 +1,18 @@
-import { uniqueRandomIndex, isAnagram, totalWidth, reset, populateLetterArrays, getLineArray, calculateLetterPositions } from './scripts/utils.js';
-import { siteTitle, anagrams, letterHeight, assetFolder, letters } from './scripts/assets.js';
 import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
-import { Application, AnimatedSprite, Container, Loader, filters } from 'pixi.js';
+import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
+import { Application, Container, Loader, filters } from 'pixi.js';
 import gsap from 'gsap';
 
-const animationTypes = {
-	NONE: 'none',
-	SLIDEY: 'slidey',
-	EXPLODEY: 'explodey',
-};
-let currentPhrase = '';
-let centerPoint, footer, filter, timeoutId, sheet, loader;
+let centerPoint, footerRight, filter, timeoutId, sheet, loader;
 
 function onSwapPress() {
 	if (timeoutId) {
 		clearTimeout(timeoutId);
 		timeoutId = null;
 	}
-	reset(letters);
-	let newIndex = uniqueRandomIndex(anagrams.length, anagrams.indexOf(currentPhrase));
-	currentPhrase = showNew(anagrams[newIndex], animationTypes.EXPLODEY);
+	const currentPhrase = goToNewAnagram();
 	changePageTitle(currentPhrase);
 	timeoutId = setTimeout(() => {
 		revertToSiteTitle();
@@ -29,8 +20,7 @@ function onSwapPress() {
 }
 
 function revertToSiteTitle() {
-	reset(letters);
-	currentPhrase = showNew(siteTitle, animationTypes.SLIDEY);
+	const currentPhrase = goToSiteTitle();
 	changePageTitle(currentPhrase);
 }
 
@@ -39,97 +29,15 @@ function changePageTitle(phrase) {
 	document.title = newTitle;
 }
 
-function prepForAnimation(phrase, letters, animation) {
-	if (animation === animationTypes.EXPLODEY) {
-		for (let i = 0; i < letters.length; i++) {
-			const ltr = letters[i];
-			if (ltr.sprite) {
-				const dest = getExplodedPosition({ x: ltr.sprite.position.x, y: ltr.sprite.position.y });
-				ltr.destX = dest.x;
-				ltr.destY = dest.y;
-			}
-		}
-	} else {
-		// slidey, none
-		const phraseLines = phrase.split('\n'); // split anagram into an array of "lines"
-		const lineArray = getLineArray(phraseLines, letters); // prepare for positioning - put letter objects in proper order
-		const letterArray = calculateLetterPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
-	}
-}
-
-function getExplodedPosition(startPosition) {
-	// TODO: change this calculation:
-	let currX = startPosition.x;
-	let currY = startPosition.y;
-	if (currX > 0) {
-		currX = ((window.innerWidth / 4) * devicePixelRatio - currX) * Math.random() + currX;
-	} else {
-		currX = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currX;
-	}
-	if (currY > 0) {
-		currY = ((window.innerWidth / 4) * devicePixelRatio - currY) * Math.random() + currY;
-	} else {
-		currY = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currY;
-	}
-	return { x: currX, y: currY };
-}
-
-function animateSwap(phrase, letters, animation) {
-	let counter = 0;
-	for (let i = 0; i < letters.length; i++) {
-		// TODO - change the style of for loop? everywhere?
-		const ltr = letters[i];
-		if (ltr.sprite) {
-			// don't render spaces. duh.
-			switch (animation) {
-				case animationTypes.NONE:
-					ltr.sprite.position.x = ltr.destX;
-					ltr.sprite.position.y = ltr.destY;
-					break;
-				case animationTypes.SLIDEY:
-					gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3, ease: 'power1.in' });
-					break;
-				case animationTypes.EXPLODEY:
-					gsap.to(ltr.sprite, {
-						x: ltr.destX,
-						y: ltr.destY,
-						duration: 0.3,
-						ease: 'power1.out',
-						onComplete() {
-							counter += 1;
-							// TODO: magic numbers are bad
-							if (counter >= 15) {
-								showNew(phrase, animationTypes.SLIDEY);
-							}
-						},
-					});
-			}
-		}
-	}
-}
-
-function showNew(phrase, animation) {
-	prepForAnimation(phrase, letters, animation);
-	animateSwap(phrase, letters, animation);
-	return phrase;
-}
-
-function createLetterSprites(letterObjs) {
-	for (let i = 0; i < letterObjs.length; i++) {
-		let letter = letterObjs[i];
-		if (letter.id) {
-			const sprite = new AnimatedSprite(sheet.spritesheet.animations[letter.id]);
-			sprite.animationSpeed = 0.1;
-			sprite.play();
-			letter.sprite = sprite;
-			centerPoint.addChild(sprite);
-		}
-	}
+function createLetterSprites() {
+	const ana = anagram(sheet);
+	centerPoint.addChild(ana);
+	//showComponent()
 }
 
 function createCopyright() {
 	const copy = copyright(sheet);
-	footer.addChild(copy);
+	footerRight.addChild(copy);
 	showComponent(copy, 1, 0.5);
 }
 
@@ -152,11 +60,10 @@ function onAppError(e) {
 
 function onAppLoaded(e) {
 	sheet = loader.resources['assets/1x/packed.json'];
-	createLetterSprites(letters);
+	createLetterSprites();
 	createCopyright();
 	createButton();
 	// start with "wasted potential":
-	currentPhrase = showNew(siteTitle, animationTypes.NONE);
 	const centerY = centerPoint.position.y;
 	centerPoint.position.y += 25;
 	gsap.to(centerPoint, { y: centerY, duration: 1 });
@@ -175,19 +82,19 @@ function initApp() {
 	// PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
 	const cont = document.querySelector('.container');
 	cont.appendChild(app.view);
-
 	return app;
 }
 
 function addContainers() {
 	centerPoint = new Container({ resolution: devicePixelRatio, roundPixels: true });
 	app.stage.addChild(centerPoint);
+	// TODO: move this alpha filter
 	filter = new filters.AlphaFilter(1);
 	centerPoint.filters = [filter];
 	filter.alpha = 0;
 
-	footer = new Container();
-	app.stage.addChild(footer);
+	footerRight = new Container();
+	app.stage.addChild(footerRight);
 }
 
 let app = initApp();
@@ -211,8 +118,8 @@ function onResize() {
 	if (centerPoint) {
 		centerPoint.position.set(0.5 * w, 0.5 * h);
 	}
-	if (footer) {
-		footer.position.set(w, h);
+	if (footerRight) {
+		footerRight.position.set(w, h);
 	}
 }
 
