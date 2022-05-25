@@ -30,8 +30,8 @@ function changePageTitle(phrase) {
 
 function createLetterSprites() {
 	const ana = anagram(sheet);
-	centerPoint.addChild(ana);
 	ana.position.set(0, 25);
+	centerPoint.addChild(ana);
 	showComponent(ana, 1, 0, 0);
 }
 

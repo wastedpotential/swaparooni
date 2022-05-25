@@ -18,8 +18,8 @@ export function showComponent(pixiComponent, duration = 0.3, delay = 0, y = null
 			holder.filters = null;
 		},
 	});
-	if (y) {
-		gsap.to(pixiComponent, { y, duration });
+	if (y !== null) {
+		gsap.to(pixiComponent, { y, delay, duration });
 	}
 }
 
