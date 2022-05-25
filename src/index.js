@@ -44,21 +44,9 @@ function prepForAnimation(phrase, letters, animation) {
 		for (let i = 0; i < letters.length; i++) {
 			const ltr = letters[i];
 			if (ltr.sprite) {
-				let currX = ltr.sprite.position.x;
-				let currY = ltr.sprite.position.y;
-				// TODO: change this calculation:
-				if (currX > 0) {
-					currX = ((window.innerWidth / 4) * devicePixelRatio - currX) * Math.random() + currX;
-				} else {
-					currX = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currX;
-				}
-				if (currY > 0) {
-					currY = ((window.innerWidth / 4) * devicePixelRatio - currY) * Math.random() + currY;
-				} else {
-					currY = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currY;
-				}
-				ltr.destX = currX;
-				ltr.destY = currY;
+				const dest = getExplodedPosition({ x: ltr.sprite.position.x, y: ltr.sprite.position.y });
+				ltr.destX = dest.x;
+				ltr.destY = dest.y;
 			}
 		}
 	} else {
@@ -67,6 +55,23 @@ function prepForAnimation(phrase, letters, animation) {
 		const lineArray = getLineArray(phraseLines, letters); // prepare for positioning - put letter objects in proper order
 		const letterArray = calculateLetterPositions(lineArray, letterHeight); // prepare for positioning - calculate letter positions
 	}
+}
+
+function getExplodedPosition(startPosition) {
+	// TODO: change this calculation:
+	let currX = startPosition.x;
+	let currY = startPosition.y;
+	if (currX > 0) {
+		currX = ((window.innerWidth / 4) * devicePixelRatio - currX) * Math.random() + currX;
+	} else {
+		currX = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currX;
+	}
+	if (currY > 0) {
+		currY = ((window.innerWidth / 4) * devicePixelRatio - currY) * Math.random() + currY;
+	} else {
+		currY = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currY;
+	}
+	return { x: currX, y: currY };
 }
 
 function animateSwap(phrase, letters, animation) {
