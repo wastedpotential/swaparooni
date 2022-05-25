@@ -1,7 +1,5 @@
-- continue breaking index.js into components
 - eliminate global vars
 - check asset scale
-- add isAnimating flag to prevent fast-clicking on the button
 - add info button and link to blog
 - add links to github, youtube, etc
 - see if custom pixi bundle can be imported

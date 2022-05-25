@@ -1,6 +1,6 @@
 import { uniqueRandomIndex, reset, getLineArray, calculateLetterPositions } from './utils.js';
 import { siteTitle, anagrams, letterHeight, letters } from './assets.js';
-import { AnimatedSprite, Container, filters } from 'pixi.js';
+import { AnimatedSprite, Container } from 'pixi.js';
 import gsap from 'gsap';
 
 export function anagram(textureSheet) {
@@ -23,16 +23,19 @@ export function anagram(textureSheet) {
 }
 
 export function goToNewAnagram() {
-	reset(letters);
-	let newIndex = uniqueRandomIndex(anagrams.length, anagrams.indexOf(currentPhrase));
-	currentPhrase = showNew(anagrams[newIndex], animationTypes.EXPLODEY);
-	return currentPhrase;
+	if (!isAnimating) {
+		isAnimating = true;
+		reset(letters);
+		let newIndex = uniqueRandomIndex(anagrams.length, anagrams.indexOf(currentPhrase));
+		currentPhrase = showNew(anagrams[newIndex], animationTypes.EXPLODEY);
+	}
+	return currentPhrase; // need to return the current phrase to change page title
 }
 
 export function goToSiteTitle() {
 	reset(letters);
 	currentPhrase = showNew(siteTitle, animationTypes.SLIDEY);
-	return currentPhrase;
+	return currentPhrase; // need to return the current phrase to change page title
 }
 
 const animationTypes = {
@@ -41,6 +44,7 @@ const animationTypes = {
 	EXPLODEY: 'explodey',
 };
 let currentPhrase = '';
+let isAnimating = false;
 
 function prepForAnimation(phrase, letters, animation) {
 	if (animation === animationTypes.EXPLODEY) {
@@ -90,7 +94,15 @@ function animateSwap(phrase, letters, animation) {
 					ltr.sprite.position.y = ltr.destY;
 					break;
 				case animationTypes.SLIDEY:
-					gsap.to(ltr.sprite, { x: ltr.destX, y: ltr.destY, duration: 0.3, ease: 'power1.in' });
+					gsap.to(ltr.sprite, {
+						x: ltr.destX,
+						y: ltr.destY,
+						duration: 0.3,
+						ease: 'power1.in',
+						onComplete() {
+							isAnimating = false;
+						},
+					});
 					break;
 				case animationTypes.EXPLODEY:
 					gsap.to(ltr.sprite, {
