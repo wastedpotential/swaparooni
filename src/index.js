@@ -2,9 +2,7 @@ import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
 import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
-import { Application } from '@pixi/app';
-import { Container } from '@pixi/display';
-import { Loader } from '@pixi/loaders';
+import { Container, Application, Loader } from 'pixi.js';
 
 let centerPoint, footerRight, timeoutId, sheet, loader;
 

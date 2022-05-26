@@ -2,4 +2,5 @@
 - check asset scale
 - add info button and link to blog
 - add links to github, youtube, etc
-- see if custom pixi bundle can be imported
+- start modifying wordpress site to accept custom homepage
+

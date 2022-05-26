@@ -70,14 +70,14 @@ function getExplodedPosition(startPosition) {
 	let currX = startPosition.x;
 	let currY = startPosition.y;
 	if (currX > 0) {
-		currX = ((window.innerWidth / 4) * devicePixelRatio - currX) * Math.random() + currX;
+		currX = ((0.5 * window.innerWidth) / devicePixelRatio - currX) * 0.25 * (1 + 3 * Math.random()) + currX;
 	} else {
-		currX = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currX;
+		currX = ((-0.5 * window.innerWidth) / devicePixelRatio - currX) * 0.25 * (1 + 3 * Math.random()) + currX;
 	}
 	if (currY > 0) {
-		currY = ((window.innerWidth / 4) * devicePixelRatio - currY) * Math.random() + currY;
+		currY = ((0.5 * window.innerHeight) / devicePixelRatio - currY) * 0.25 * (1 + 3 * Math.random()) + currY;
 	} else {
-		currY = (((-1 * window.innerWidth) / 4) * devicePixelRatio - currX) * Math.random() + currY;
+		currY = ((-0.5 * window.innerHeight) / devicePixelRatio - currY) * 0.25 * (1 + 3 * Math.random()) + currY;
 	}
 	return { x: currX, y: currY };
 }
