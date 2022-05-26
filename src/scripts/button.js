@@ -1,4 +1,5 @@
-import { Sprite, Container, filters } from 'pixi.js';
+import { Sprite } from '@pixi/sprite';
+import { Container } from '@pixi/display';
 import gsap from 'gsap';
 
 export function button(textureSheet, onPressCallback) {

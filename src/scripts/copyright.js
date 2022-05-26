@@ -1,4 +1,5 @@
-import { Sprite, Container, filters } from 'pixi.js';
+import { Sprite } from '@pixi/sprite';
+import { Container } from '@pixi/display';
 
 export function copyright(textureSheet) {
 	const RIGHT_MARGIN = 60;

@@ -1,6 +1,7 @@
 import { uniqueRandomIndex, reset, getLineArray, calculateLetterPositions } from './utils.js';
 import { siteTitle, anagrams, letterHeight, letters } from './assets.js';
-import { AnimatedSprite, Container } from 'pixi.js';
+import { AnimatedSprite } from '@pixi/sprite-animated';
+import { Container } from '@pixi/display';
 import gsap from 'gsap';
 
 export function anagram(textureSheet) {
