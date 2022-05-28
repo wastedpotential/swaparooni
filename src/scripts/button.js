@@ -1,16 +1,15 @@
-import { Sprite } from '@pixi/sprite';
-import { Container } from '@pixi/display';
+import * as PIXI from './pixi.js';
 import gsap from 'gsap';
 
 export function button(textureSheet, onPressCallback) {
-	const buttonHolder = new Container({ resolution: devicePixelRatio, roundPixels: true });
+	const buttonHolder = new PIXI.Container({ resolution: devicePixelRatio, roundPixels: true });
 
 	const texBottom = textureSheet.textures['press_bottom.png'];
-	const buttonBottom = new Sprite(texBottom);
+	const buttonBottom = new PIXI.Sprite(texBottom);
 	buttonHolder.addChild(buttonBottom);
 
 	const texTop = textureSheet.textures['press_top.png'];
-	const buttonTop = new Sprite(texTop);
+	const buttonTop = new PIXI.Sprite(texTop);
 	buttonHolder.addChild(buttonTop);
 
 	buttonHolder.pivot.set(0.5 * buttonBottom.width, 0.5 * buttonBottom.height);

@@ -1,16 +1,16 @@
 import { uniqueRandomIndex, reset, getLineArray, calculateLetterPositions } from './utils.js';
 import { siteTitle, anagrams, letterHeight, letters } from './assets.js';
-import { AnimatedSprite } from '@pixi/sprite-animated';
-import { Container } from '@pixi/display';
+import * as PIXI from './pixi.js';
 import gsap from 'gsap';
 
 export function anagram(textureSheet) {
-	const anagramHolder = new Container();
+	const anagramHolder = new PIXI.Container();
 
 	for (let i = 0; i < letters.length; i++) {
 		let letter = letters[i];
 		if (letter.id) {
-			const sprite = new AnimatedSprite(textureSheet.spritesheet.animations[letter.id]);
+			const sprite = new PIXI.AnimatedSprite(textureSheet.spritesheet.animations[letter.id]);
+			console.log('~~', sprite.width, sprite.height);
 			sprite.animationSpeed = 0.1;
 			sprite.play();
 			letter.sprite = sprite;
@@ -88,6 +88,7 @@ function animateSwap(phrase, letters, animation) {
 		// TODO - change the style of for loop? everywhere?
 		const ltr = letters[i];
 		if (ltr.sprite) {
+			//console.log(ltr.sprite.scale);
 			// don't render spaces. duh.
 			switch (animation) {
 				case animationTypes.NONE:

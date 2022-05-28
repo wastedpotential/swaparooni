@@ -1,13 +1,12 @@
-import { Container } from '@pixi/display';
-import { AlphaFilter } from '@pixi/filter-alpha';
+import * as PIXI from './pixi.js';
 import gsap from 'gsap';
 
 // fade in a provided component with provided delay and duration values
 export function showComponent(pixiComponent, duration = 0.3, delay = 0, y = null) {
 	console.log('show');
 	const parent = pixiComponent.parent;
-	const holder = new Container(); //{resolution: devicePixelRatio, roundPixels: true});
-	const filter = new AlphaFilter(0);
+	const holder = new PIXI.Container(); //{resolution: devicePixelRatio, roundPixels: true});
+	const filter = new PIXI.filters.AlphaFilter(0);
 	holder.filters = [filter];
 	holder.addChild(pixiComponent);
 	parent.addChild(holder);

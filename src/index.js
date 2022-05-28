@@ -2,7 +2,7 @@ import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
 import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
-import { Container, Application, Loader } from 'pixi.js';
+import * as PIXI from './scripts/pixi.js';
 
 let centerPoint, footerRight, timeoutId, sheet, loader;
 
@@ -67,7 +67,7 @@ function onAppLoaded(e) {
 
 function initApp() {
 	window.addEventListener('resize', onResize);
-	let app = new Application({ resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+	let app = new PIXI.Application({ resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
 	// PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
 	const cont = document.querySelector('.container');
 	cont.appendChild(app.view);
@@ -75,10 +75,10 @@ function initApp() {
 }
 
 function addContainers() {
-	centerPoint = new Container({ resolution: devicePixelRatio, roundPixels: true });
+	centerPoint = new PIXI.Container({ resolution: devicePixelRatio, roundPixels: true });
 	app.stage.addChild(centerPoint);
 
-	footerRight = new Container();
+	footerRight = new PIXI.Container();
 	app.stage.addChild(footerRight);
 }
 
@@ -87,7 +87,7 @@ addContainers();
 preload(); // assets are added and displayed in onComplete()
 
 function preload() {
-	loader = Loader.shared; // PixiJS exposes a premade instance for you to use.
+	loader = PIXI.Loader.shared; // PixiJS exposes a premade instance for you to use.
 	loader.add('assets/1x/packed.json');
 	loader.onProgress.add(onAppProgress);
 	loader.onError.add(onAppError);
@@ -98,7 +98,12 @@ function preload() {
 function onResize() {
 	const w = window.innerWidth / devicePixelRatio;
 	const h = window.innerHeight / devicePixelRatio;
-	if (app) app.renderer.resize(w, h);
+	if (app) {
+		app.renderer.resize(w, h);
+		// app.stage.resize(w, h);
+		// app.stage.scale = 0.5;
+		// console.log('~~', app.stage.width, window.innerWidth, devicePixelRatio, window.innerWidth / devicePixelRatio);
+	}
 
 	if (centerPoint) {
 		centerPoint.position.set(0.5 * w, 0.5 * h);
