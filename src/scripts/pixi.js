@@ -12,11 +12,14 @@ export * from '@pixi/sprite';
 export * from '@pixi/app';
 export * from '@pixi/sprite-animated';
 export * from '@pixi/spritesheet';
+export * from '@pixi/interaction';
 
 // Renderer plugins
 import { Renderer } from '@pixi/core';
 import { BatchRenderer } from '@pixi/core';
 Renderer.registerPlugin('batch', BatchRenderer);
+import { InteractionManager } from '@pixi/interaction';
+Renderer.registerPlugin('interaction', InteractionManager);
 
 // Application plugins
 import { Application } from '@pixi/app';
