@@ -10,10 +10,10 @@ export function anagram(textureSheet) {
 		let letter = letters[i];
 		if (letter.id) {
 			const sprite = new PIXI.AnimatedSprite(textureSheet.spritesheet.animations[letter.id]);
-			console.log('~~', sprite.width, sprite.height);
 			sprite.animationSpeed = 0.1;
 			sprite.play();
 			letter.sprite = sprite;
+			letter.w = sprite.width;
 			anagramHolder.addChild(sprite);
 		}
 	}
@@ -70,14 +70,14 @@ function getExplodedPosition(startPosition) {
 	let currX = startPosition.x;
 	let currY = startPosition.y;
 	if (currX > 0) {
-		currX = ((0.5 * window.innerWidth) / devicePixelRatio - currX) * 0.25 * (1 + 3 * Math.random()) + currX;
+		currX = (0.5 * window.innerWidth - currX) * 0.25 * (1 + 3 * Math.random()) + currX;
 	} else {
-		currX = ((-0.5 * window.innerWidth) / devicePixelRatio - currX) * 0.25 * (1 + 3 * Math.random()) + currX;
+		currX = (-0.5 * window.innerWidth - currX) * 0.25 * (1 + 3 * Math.random()) + currX;
 	}
 	if (currY > 0) {
-		currY = ((0.5 * window.innerHeight) / devicePixelRatio - currY) * 0.25 * (1 + 3 * Math.random()) + currY;
+		currY = (0.5 * window.innerHeight - currY) * 0.25 * (1 + 3 * Math.random()) + currY;
 	} else {
-		currY = ((-0.5 * window.innerHeight) / devicePixelRatio - currY) * 0.25 * (1 + 3 * Math.random()) + currY;
+		currY = (-0.5 * window.innerHeight - currY) * 0.25 * (1 + 3 * Math.random()) + currY;
 	}
 	return { x: currX, y: currY };
 }
@@ -88,7 +88,6 @@ function animateSwap(phrase, letters, animation) {
 		// TODO - change the style of for loop? everywhere?
 		const ltr = letters[i];
 		if (ltr.sprite) {
-			//console.log(ltr.sprite.scale);
 			// don't render spaces. duh.
 			switch (animation) {
 				case animationTypes.NONE:

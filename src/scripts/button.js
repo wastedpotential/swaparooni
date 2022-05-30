@@ -2,7 +2,7 @@ import * as PIXI from './pixi.js';
 import gsap from 'gsap';
 
 export function button(textureSheet, onPressCallback) {
-	const buttonHolder = new PIXI.Container({ resolution: devicePixelRatio, roundPixels: true });
+	const buttonHolder = new PIXI.Container();
 
 	const texBottom = textureSheet.textures['press_bottom.png'];
 	const buttonBottom = new PIXI.Sprite(texBottom);

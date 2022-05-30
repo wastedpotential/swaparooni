@@ -1,10 +1,11 @@
+import { letterSpacing } from './assets.js';
+
 // generate a random array index. It must be different than the current value
 export function uniqueRandomIndex(length, currentVal = -1) {
 	// TODO: throw error if length < 2
 	let newVal;
 	do {
 		newVal = Math.floor(length * Math.random());
-		console.log(newVal);
 	} while (currentVal === newVal);
 	return newVal;
 }
@@ -18,7 +19,8 @@ export function isAnagram(str1, str2) {
 
 // add up the widths of all objects in an array and return the total value:
 export function totalWidth(items) {
-	var total = items.reduce((partialSum, a) => partialSum + a.w, 0);
+	let total = items.reduce((partialSum, a) => partialSum + a.w + letterSpacing, 0);
+	total -= letterSpacing; // remove the trailing space
 	return total;
 }
 
@@ -54,7 +56,7 @@ export function getLineArray(stringArray, letterObjectsArray) {
 
 //
 export function calculateLetterPositions(lineArray, letterHeight) {
-	const startY = -0.5 * lineArray.length * letterHeight;
+	const startY = -0.5 * (lineArray.length + 1) * letterHeight;
 	for (let i = 0; i < lineArray.length; i++) {
 		const line = lineArray[i];
 		const totalW = totalWidth(line);
@@ -64,7 +66,7 @@ export function calculateLetterPositions(lineArray, letterHeight) {
 			const ltr = line[j];
 			ltr.destX = lineX;
 			ltr.destY = lineStartY;
-			lineX += line[j].w;
+			lineX += line[j].w + letterSpacing;
 		}
 	}
 	return lineArray;

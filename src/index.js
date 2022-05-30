@@ -2,6 +2,7 @@ import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
 import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
+import { spritesheetLocation } from './scripts/assets.js';
 import * as PIXI from './scripts/pixi.js';
 
 let centerPoint, footerRight, timeoutId, sheet, loader;
@@ -37,9 +38,9 @@ function createLetterSprites() {
 
 function createButton() {
 	const swapButton = button(sheet, onSwapPress);
-	swapButton.position.set(0, 155);
+	swapButton.position.set(0, 125);
 	centerPoint.addChild(swapButton);
-	showComponent(swapButton, 1, 0.5, 130);
+	showComponent(swapButton, 1, 0.5, 100);
 }
 
 function createCopyright() {
@@ -59,7 +60,7 @@ function onAppError(e) {
 }
 
 function onAppLoaded(e) {
-	sheet = loader.resources['assets/1x/packed.json'];
+	sheet = loader.resources[spritesheetLocation];
 	createLetterSprites();
 	createButton();
 	createCopyright();
@@ -67,7 +68,7 @@ function onAppLoaded(e) {
 
 function initApp() {
 	window.addEventListener('resize', onResize);
-	let app = new PIXI.Application({ resolution: devicePixelRatio, roundPixels: true, backgroundColor: 0xf1f4f9 });
+	let app = new PIXI.Application({ resolution: 1, roundPixels: true, backgroundColor: 0xf1f4f9 });
 	// PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
 	const cont = document.querySelector('.container');
 	cont.appendChild(app.view);
@@ -75,7 +76,7 @@ function initApp() {
 }
 
 function addContainers() {
-	centerPoint = new PIXI.Container({ resolution: devicePixelRatio, roundPixels: true });
+	centerPoint = new PIXI.Container();
 	app.stage.addChild(centerPoint);
 
 	footerRight = new PIXI.Container();
@@ -88,7 +89,7 @@ preload(); // assets are added and displayed in onComplete()
 
 function preload() {
 	loader = PIXI.Loader.shared; // PixiJS exposes a premade instance for you to use.
-	loader.add('assets/1x/packed.json');
+	loader.add(spritesheetLocation);
 	loader.onProgress.add(onAppProgress);
 	loader.onError.add(onAppError);
 	loader.onComplete.add(onAppLoaded);
@@ -96,13 +97,10 @@ function preload() {
 }
 
 function onResize() {
-	const w = window.innerWidth / devicePixelRatio;
-	const h = window.innerHeight / devicePixelRatio;
+	const w = window.innerWidth;
+	const h = window.innerHeight;
 	if (app) {
 		app.renderer.resize(w, h);
-		// app.stage.resize(w, h);
-		// app.stage.scale = 0.5;
-		// console.log('~~', app.stage.width, window.innerWidth, devicePixelRatio, window.innerWidth / devicePixelRatio);
 	}
 
 	if (centerPoint) {

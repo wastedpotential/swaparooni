@@ -3,7 +3,6 @@ import gsap from 'gsap';
 
 // fade in a provided component with provided delay and duration values
 export function showComponent(pixiComponent, duration = 0.3, delay = 0, y = null) {
-	console.log('show');
 	const parent = pixiComponent.parent;
 	const holder = new PIXI.Container(); //{resolution: devicePixelRatio, roundPixels: true});
 	const filter = new PIXI.filters.AlphaFilter(0);
