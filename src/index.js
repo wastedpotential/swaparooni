@@ -2,7 +2,7 @@ import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
 import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
-import { spritesheetLocation } from './scripts/assets.js';
+import { spritesheetLocation, minStageWidth } from './scripts/assets.js';
 import * as PIXI from './scripts/pixi.js';
 
 let centerPoint, footerRight, timeoutId, sheet, loader;
@@ -64,6 +64,7 @@ function onAppLoaded(e) {
 	createLetterSprites();
 	createButton();
 	createCopyright();
+	onResize();
 }
 
 function initApp() {
@@ -109,6 +110,8 @@ function onResize() {
 	if (footerRight) {
 		footerRight.position.set(w, h);
 	}
-}
 
-onResize();
+	// hacky way using constant from assets.js to keep anagram scaled to fit on screen
+	const scale = Math.min(1, w / minStageWidth);
+	centerPoint.scale.set(scale, scale);
+}
