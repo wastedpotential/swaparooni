@@ -2,10 +2,11 @@ import { button } from './scripts/button.js';
 import { copyright } from './scripts/copyright.js';
 import { showComponent } from './scripts/displayUtils.js';
 import { anagram, goToNewAnagram, goToSiteTitle } from './scripts/anagram.js';
+import { Header } from './scripts/header.js';
 import { spritesheetLocation, minStageWidth } from './scripts/assets.js';
 import * as PIXI from './scripts/pixi.js';
 
-let centerPoint, footerRight, timeoutId, sheet, loader;
+let centerPoint, footerRight, hdr, timeoutId, sheet, loader;
 
 function onSwapPress() {
 	if (timeoutId) {
@@ -82,6 +83,9 @@ function addContainers() {
 
 	footerRight = new PIXI.Container();
 	app.stage.addChild(footerRight);
+
+	hdr = new Header(window.innerWidth);
+	app.stage.addChild(hdr);
 }
 
 let app = initApp();
@@ -109,6 +113,9 @@ function onResize() {
 	}
 	if (footerRight) {
 		footerRight.position.set(w, h);
+	}
+	if (hdr) {
+		hdr.resize(w);
 	}
 
 	// hacky way using constant from assets.js to keep anagram scaled to fit on screen
