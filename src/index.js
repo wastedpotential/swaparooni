@@ -65,6 +65,8 @@ function onAppLoaded(e) {
 	createLetterSprites();
 	createButton();
 	createCopyright();
+	hdr = new Header(sheet, window.innerWidth);
+	app.stage.addChild(hdr);
 	onResize();
 }
 
@@ -83,9 +85,6 @@ function addContainers() {
 
 	footerRight = new PIXI.Container();
 	app.stage.addChild(footerRight);
-
-	hdr = new Header(window.innerWidth);
-	app.stage.addChild(hdr);
 }
 
 let app = initApp();

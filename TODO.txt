@@ -2,4 +2,4 @@
 - add info button and link to blog
 - add links to github, youtube, etc
 - start modifying wordpress site to accept custom homepage
-- scale down if the anagrams won't fit
+- rewrite all files as classes?

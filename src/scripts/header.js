@@ -1,12 +1,11 @@
 import * as PIXI from './pixi.js';
 
 export class Header extends PIXI.Container {
-	constructor(width) {
+	constructor(textureSheet, width) {
 		super();
-		this.rectangle = PIXI.Sprite.from(PIXI.Texture.WHITE);
-		this.resize(width);
-		this.rectangle.height = 44;
-		this.rectangle.tint = 0xff0000;
+		const MENU_BAR_HEIGHT = 50;
+		const texBg = textureSheet.textures['menubar_bg.png'];
+		this.rectangle = new PIXI.TilingSprite(texBg, width, MENU_BAR_HEIGHT);
 		this.addChild(this.rectangle);
 	}
 
