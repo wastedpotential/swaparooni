@@ -1,6 +1,6 @@
 export const letterHeight = 60; // all letters must be same height
 export const letterSpacing = 20;
-export const spritesheetLocation = 'assets/1x/packed.json';
+export const spritesheetLocation = '__ROOT_URL__assets/1x/packed.json';
 export const minStageWidth = 11 * 34 + 12 * letterSpacing;
 
 export const siteTitle = 'wasted\npotential';

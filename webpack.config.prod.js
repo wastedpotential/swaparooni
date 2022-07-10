@@ -28,6 +28,15 @@ module.exports = {
 					loader: 'babel-loader',
 				},
 			},
+			{
+				test: /\.(js)$/,
+				loader: 'string-replace-loader',
+				options: {
+					search: '__ROOT_URL__',
+					replace: '',
+					flags: 'g',
+				},
+			},
 		],
 	},
 	optimization: {
